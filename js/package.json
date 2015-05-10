@@ -1,0 +1,42 @@
+{
+  "name": "amp-chat",
+  "version": "1.0.0",
+  "author": "Niklas Keller <me@kelunik.com>",
+  "contributors": [],
+  "scripts": {
+    "build": "browserify -t hbsfy src/main.js | uglifyjs -m > all.min.js",
+    "watch": "watchify -t hbsfy src/main.js -o all.min.js --verbose"
+  },
+  "main": "src/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kelunik/ac-client"
+  },
+  "bugs": {
+    "url": "https://github.com/kelunik/ac-client/issues"
+  },
+  "dependencies": {
+    "autolinker": "0.15.x",
+    "backbone": "^1.1.2",
+    "browserify": "8.1.x",
+    "handlebars": "2.0.x",
+    "hbsfy": "2.2.x",
+    "jquery": "^2.1.4",
+    "minifyify": "6.1.x",
+    "moment": "2.9.x",
+    "remarkable": "1.6.x",
+    "remarkable-regexp": "0.2.4",
+    "uglify-js": "2.4.x"
+  },
+  "devDependencies": {
+    "chai": "^2.0.0",
+    "jsdom": "^3.1.1",
+    "mocha": "2.1.x",
+    "mocha-jsdom": "^0.2.0",
+    "mocha-sinon": "^1.1.4",
+    "sinon": "^1.12.2",
+    "watchify": "2.3.x"
+  },
+  "preferGlobal": false,
+  "private": true
+}
