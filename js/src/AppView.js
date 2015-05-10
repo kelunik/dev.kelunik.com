@@ -15,9 +15,11 @@ module.exports = Backbone.View.extend({
     initialize: function () {
         this.messageList = new MessageList;
 
-        this.messageList.add(new Message({
-            text: "first"
-        }));
+        for (var i = 0; i < 30; i++) {
+            this.messageList.add(new Message({
+                text: "first"
+            }));
+        }
 
         this.messageListView = new MessageListView({collection: this.messageList});
         this.inputView = new InputView({model: new Input});

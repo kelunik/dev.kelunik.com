@@ -108,6 +108,7 @@ main {
     line-height: 26px;
     height: 26px;
     margin-right: 10px;
+    max-height: 50vh;
 }
 
 .message-input-text:focus {
@@ -123,4 +124,6 @@ main {
     border-radius: 3px;
     padding-left: 10px;
     padding-right: 10px;
+    height: 26px;
+    align-self: flex-end;
 }
