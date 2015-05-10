@@ -17,12 +17,6 @@ module.exports = Backbone.View.extend({
             text: "first"
         }));
 
-        setInterval(function () {
-            this.messageList.add(new Message({
-                text: "next"
-            }));
-        }.bind(this), 200);
-
         this.messageListView = new MessageListView({collection: this.messageList});
 
         this.render();
