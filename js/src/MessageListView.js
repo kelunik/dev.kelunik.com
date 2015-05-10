@@ -5,7 +5,7 @@ Backbone.$ = $;
 var MessageView = require("./MessageView");
 
 module.exports = Backbone.View.extend({
-    tagName: "div",
+    tagName: "section",
     className: "messages",
 
     initialize: function () {
