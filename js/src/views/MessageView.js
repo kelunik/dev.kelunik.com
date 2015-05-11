@@ -5,7 +5,7 @@ Backbone.$ = $;
 module.exports = Backbone.View.extend({
     tagName: "div",
     className: "message",
-    template: require("./views/message.handlebars"),
+    template: require("../templates/message.handlebars"),
 
     initialize: function () {
         this.render();

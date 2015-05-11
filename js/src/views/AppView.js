@@ -2,15 +2,15 @@ var Backbone = require("backbone");
 var $ = require("jquery");
 Backbone.$ = $;
 
-var Input = require("./Input");
+var Input = require("../models/Input");
+var Message = require("../models/Message");
+var MessageList = require("../models/MessageList");
 var InputView = require("./InputView");
-var MessageList = require("./MessageList");
 var MessageListView = require("./MessageListView");
-var Message = require("./Message");
 
 module.exports = Backbone.View.extend({
     el: "body",
-    template: require("./views/chat.handlebars"),
+    template: require("../templates/chat.handlebars"),
 
     initialize: function () {
         this.messageList = new MessageList;

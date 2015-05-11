@@ -5,7 +5,7 @@ Backbone.$ = $;
 module.exports = Backbone.View.extend({
     tagName: "section",
     className: "message-input",
-    template: require("./views/input.handlebars"),
+    template: require("../templates/input.handlebars"),
 
     events: {
         "input .message-input-text": "onInput"

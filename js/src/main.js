@@ -27,6 +27,6 @@ if (window.top != window.self) {
         }
     });
 
-    var AppView = require("./AppView");
+    var AppView = require("./views/AppView");
     new AppView();
 }
