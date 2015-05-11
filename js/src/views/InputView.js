@@ -22,12 +22,10 @@ module.exports = Backbone.View.extend({
         return this;
     },
 
-    onInput: function (event) {
-        console.log("adjusting");
-
+    onInput: function () {
         var toScroll = [];
-
         var $messages = $(".messages");
+
         $messages.each(function (i, o) {
             toScroll.push(o.scrollHeight - o.scrollTop - o.clientHeight);
         });
@@ -36,11 +34,14 @@ module.exports = Backbone.View.extend({
 
         this.input.style.height = "0";
 
+        // use + 1 to prevent zoom issues
         var height = this.input.scrollHeight + 1;
-        this.input.style.height = Math.max(26, height) + "px";
 
+        this.input.style.height = Math.max(26, height) + "px";
         this.input.scrollTop = scroll;
 
+        // reset scroll positions using
+        // the height of the non-visible bottom part
         $messages.each(function (i, o) {
             var scroll = toScroll.shift();
             o.scrollTop = o.scrollHeight - o.clientHeight - scroll;
