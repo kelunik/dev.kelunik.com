@@ -7,9 +7,23 @@ if (window.top != window.self) {
 
     Backbone.$ = $;
 
+    var AppView = require("./views/AppView");
+    var LoaderView = require("./views/LoaderView");
+    var ChatView = require("./views/ChatView");
+
     var router = new Router;
-    router.on("route:defaultRoute", function (actions) {
-        // alert(actions);
+    var appView = new AppView;
+
+    router.on("route:defaultRoute", function () {
+        appView.setView(new LoaderView);
+
+        setTimeout(function () {
+            Backbone.history.navigate("/rooms/1", true);
+        }, 1500);
+    });
+
+    router.on("route:room", function (roomId) {
+        appView.setView(new ChatView);
     });
 
     Backbone.history.start({pushState: true});
@@ -26,7 +40,4 @@ if (window.top != window.self) {
             return false;
         }
     });
-
-    var AppView = require("./views/AppView");
-    new AppView();
 }

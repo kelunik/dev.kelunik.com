@@ -1,5 +1,6 @@
 @import url("http://fonts.googleapis.com/css?family=Source+Code+Pro|Lato");
 @import url("/css/src/message.css");
+@import url("/css/src/loader.css");
 
 * {
     box-sizing: border-box;
@@ -26,7 +27,7 @@ main {
     padding: 10px;
 }
 
-.chat > * {
+main > * {
     margin-right: 10px;
 }
 
