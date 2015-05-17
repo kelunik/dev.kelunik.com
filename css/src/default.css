@@ -127,3 +127,15 @@ main {
     height: 26px;
     align-self: flex-end;
 }
+
+.chat-room {
+    display: block;
+    line-height: 35px;
+    min-height: 35px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
