@@ -29,6 +29,40 @@ main {
 
 main > * {
     margin-right: 10px;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation: show 600ms 1 ease-in-out;
+    animation: show 600ms 1 ease-in-out;
+}
+
+main > :nth-child(1) {
+    -webkit-animation-delay: -400ms;
+    animation-delay: -400ms;
+}
+
+main > :nth-child(2) {
+    -webkit-animation-delay: -200ms;
+    animation-delay: -200ms;
+}
+
+@-webkit-keyframes show {
+    0%,
+    40% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes show {
+    0%,
+    40% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .chat > :last-child {
