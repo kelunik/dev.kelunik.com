@@ -65,7 +65,7 @@ main > :nth-child(2) {
     }
 }
 
-.chat > :last-child {
+main > :last-child {
     margin-right: 0;
 }
 
