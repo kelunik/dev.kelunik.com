@@ -2,6 +2,12 @@ var dest = "./build";
 var src = './src';
 
 module.exports = {
+    browserSync: {
+        server: {
+            // Serve up our build folder
+            baseDir: dest
+        }
+    },
     sass: {
         src: src + "/sass/main.sass",
         dest: dest,
@@ -13,6 +19,10 @@ module.exports = {
     images: {
         src: src + "/images/**",
         dest: dest + "/images"
+    },
+    markup: {
+        src: src + "/index.html",
+        dest: dest
     },
     browserify: {
         bundleConfigs: [{

@@ -25,7 +25,7 @@
     "remarkable-regexp": "0.2.4"
   },
   "devDependencies": {
-    "browser-sync": "~2.2.2",
+    "browser-sync": "^2.7.1",
     "browserify": "^9.0.3",
     "browserify-shim": "^3.8.2",
     "coffeeify": "~1.0.0",

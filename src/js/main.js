@@ -18,7 +18,7 @@ if (window.top != window.self) {
         appView.setView(new LoaderView);
 
         setTimeout(function () {
-            Backbone.history.navigate("/rooms/1", true);
+            // Backbone.history.navigate("/rooms/1", true);
         }, 1500);
     });
 
