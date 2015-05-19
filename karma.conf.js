@@ -1,5 +1,5 @@
 module.exports = function (config) {
-    config.set({
+    var configuration = {
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
 
@@ -48,11 +48,24 @@ module.exports = function (config) {
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: ['Chrome'],
 
+        customLaunchers: {
+            Chrome_CI: {
+                base: "Chrome",
+                flags: ["--no-sandbox"]
+            }
+        },
+
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
         singleRun: false,
 
         // Helps to address an issue on TravisCI where activity can time out
         browserNoActivityTimeout: 30000
-    });
+    };
+
+    if (process.env.TRAVIS) {
+        configuration.browsers = ["Chrome_CI"];
+    }
+
+    config.set(configuration);
 };
