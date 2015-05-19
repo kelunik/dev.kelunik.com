@@ -11,21 +11,21 @@
 }
 
 .loader {
-    margin: auto;
+    margin: auto !important;
     font-size: 4px;
     position: relative;
     text-indent: -9999em;
     -webkit-transform: translateZ(0);
     -ms-transform: translateZ(0);
     transform: translateZ(0);
-    -webkit-animation-delay: -0.16s;
-    animation-delay: -0.16s;
+    -webkit-animation-delay: -0.3s;
+    animation-delay: -0.3s;
 }
 
 .loader:before {
     left: -4em;
-    -webkit-animation-delay: -0.32s;
-    animation-delay: -0.32s;
+    -webkit-animation-delay: -0.6s;
+    animation-delay: -0.6s;
 }
 
 .loader:after {
