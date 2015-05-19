@@ -9,7 +9,7 @@ module.exports = {
         }
     },
     sass: {
-        src: src + "/sass/main.sass",
+        src: src + "/sass/**/*.sass",
         dest: dest,
         settings: {
             indentedSyntax: true, // Enable .sass syntax!
