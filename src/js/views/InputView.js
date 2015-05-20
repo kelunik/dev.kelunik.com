@@ -107,6 +107,7 @@ module.exports = Backbone.View.extend({
     },
 
     submit: function () {
+        console.log(this.model.get("room").get("id"));
         console.log(this.input.value);
 
         this.input.value = "";
