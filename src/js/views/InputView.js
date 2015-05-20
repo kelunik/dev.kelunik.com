@@ -1,4 +1,5 @@
 var Backbone = require("backbone");
+var _ = require("backbone/node_modules/underscore");
 var $ = require("jquery");
 Backbone.$ = $;
 
@@ -25,7 +26,7 @@ module.exports = Backbone.View.extend({
     },
 
     onInput: function () {
-        this.adjust();
+        _.throttle(this.adjust(), 250);
     },
 
     onKeyDown: function (event) {
