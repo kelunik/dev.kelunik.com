@@ -8,7 +8,8 @@ module.exports = Backbone.View.extend({
     template: require("../templates/input.handlebars"),
 
     events: {
-        "input .message-input-text": "onInput"
+        "input .message-input-text": "onInput",
+        "keydown .message-input-text": "onKeyDown"
     },
 
     initialize: function () {
@@ -23,6 +24,40 @@ module.exports = Backbone.View.extend({
     },
 
     onInput: function () {
+        this.adjust();
+    },
+
+    onKeyDown: function (event) {
+        var value = this.input.value;
+
+        if (event.which === 13) {
+            if (event.shiftKey) {
+                return;
+            }
+
+            if (event.ctrlKey) {
+                event.preventDefault();
+                this.submit();
+
+                return false;
+            }
+
+            if (value.indexOf("\n") === -1) {
+                event.preventDefault();
+                this.submit();
+
+                return false;
+            }
+        }
+    },
+
+    submit: function () {
+        console.log(this.input.value);
+        this.input.value = "";
+        this.adjust();
+    },
+
+    adjust: function () {
         var toScroll = [];
         var $messages = $(".messages");
 
