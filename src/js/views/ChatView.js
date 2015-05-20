@@ -2,13 +2,7 @@ var Backbone = require("backbone");
 var $ = require("jquery");
 Backbone.$ = $;
 
-var Input = require("../models/Input");
-var Message = require("../models/Message");
-var MessageList = require("../models/MessageList");
-var Room = require("../models/Room");
-var RoomList = require("../models/RoomList");
-var InputView = require("./InputView");
-var MessageListView = require("./MessageListView");
+var RoomTabListView = require("./RoomTabListView");
 var RoomListView = require("./RoomListView");
 
 module.exports = Backbone.View.extend({
@@ -16,31 +10,20 @@ module.exports = Backbone.View.extend({
     template: require("../templates/chat.handlebars"),
 
     initialize: function () {
-        this.messageList = new MessageList;
-
-        for (var i = 0; i < 30; i++) {
-            this.messageList.add(new Message({
-                text: "first"
-            }));
-        }
-
-        var room = new Room;
-        room.set("id", 31);
-
-        this.roomList = new RoomList;
-        this.roomList.add(room);
-
-        this.messageListView = new MessageListView({collection: this.messageList});
-        this.inputView = new InputView({model: new Input});
-        this.roomListView = new RoomListView({collection: this.roomList});
+        this.roomTabListView = new RoomTabListView({collection: this.model.get("rooms")});
+        this.roomListView = new RoomListView({collection: this.model.get("rooms")});
     },
 
     render: function () {
         this.$el.html(this.template());
-        this.$el.find(".chat-main").append(this.messageListView.render().el);
-        this.$el.find(".chat-main").append(this.inputView.render().el);
+        this.$el.find(".chat-room-tabs").append(this.roomTabListView.render().el);
         this.$el.find(".chat-rooms").append(this.roomListView.render().el);
 
         return this;
+    },
+
+    switchRoom: function (roomId) {
+        $(".chat-room-current").removeClass("chat-room-current");
+        $("#room-" + roomId).addClass("chat-room-current");
     }
 });

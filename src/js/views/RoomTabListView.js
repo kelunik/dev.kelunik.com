@@ -2,17 +2,19 @@ var Backbone = require("backbone");
 var $ = require("jquery");
 Backbone.$ = $;
 
-var RoomView = require("./RoomView");
+var RoomTabView = require("./RoomTabView");
 
 module.exports = Backbone.View.extend({
     tagName: "section",
-    className: "chat-room-list",
+    className: "chat-room-tab-list",
 
     initialize: function () {
         this.collection.on("add", this.renderSingle, this);
     },
 
     render: function () {
+        this.$el.html("");
+
         this.collection.each(function (room) {
             this.renderSingle(room);
         }, this);
@@ -21,7 +23,7 @@ module.exports = Backbone.View.extend({
     },
 
     renderSingle: function (room) {
-        var view = new RoomView({model: room});
+        var view = new RoomTabView({model: room});
         this.$el.append(view.render().el);
 
         return this;

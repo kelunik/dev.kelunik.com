@@ -2,13 +2,10 @@ var Backbone = require("backbone");
 var $ = require("jquery");
 Backbone.$ = $;
 
+var RoomList = require("./RoomList");
+
 module.exports = Backbone.Model.extend({
     defaults: {
-        authorId: 0,
-        authorName: "",
-        authorAvatar: "",
-        text: "",
-        html: "",
-        createdAt: 0
+        rooms: new RoomList
     }
 });

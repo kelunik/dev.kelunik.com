@@ -10,6 +10,9 @@ if (window.top != window.self) {
     var AppView = require("./views/AppView");
     var LoaderView = require("./views/LoaderView");
     var ChatView = require("./views/ChatView");
+    var Chat = require("./models/Chat");
+    var Room = require("./models/Room");
+    var Message = require("./models/Message");
 
     var router = new Router;
     var appView = new AppView;
@@ -23,7 +26,34 @@ if (window.top != window.self) {
     });
 
     router.on("route:room", function (roomId) {
-        appView.setView(new ChatView);
+        var view = appView.getView();
+
+        if (view instanceof ChatView) {
+            view.switchRoom(roomId);
+        } else {
+            var chat = new Chat;
+            var room = new Room({
+                id: 1,
+                name: "Two Crowns"
+            });
+
+            room.get("messages").add(new Message({
+                text: "blah!",
+                authorName: "foo",
+                authorAvatar: "https://avatars1.githubusercontent.com/u/2743004?v=3&s=460"
+            }));
+
+            chat.get("rooms").add(room);
+            chat.get("rooms").add(new Room({
+                id: 1337,
+                name: "Four Crowns"
+            }));
+
+            var chatView = new ChatView({model: chat});
+            appView.setView(chatView);
+
+            chatView.switchRoom(roomId);
+        }
     });
 
     Backbone.history.start({pushState: true});

@@ -27,13 +27,11 @@ main
   *:last-child
     margin-right: 0
 
-.chat-main
+.chat-rooms
   display: flex
   flex-grow: 1
-  margin-right: 10px
-  flex-direction: column
 
-.chat-rooms
+.chat-room-tabs
   width: 200px
   flex-shrink: 0
 
@@ -107,6 +105,24 @@ main
   align-self: flex-end
 
 .chat-room
+  display: none
+  flex-grow: 1
+
+.chat-room-current
+  display: flex
+
+.chat-main
+  flex-grow: 1
+  margin-right: 10px
+  display: flex
+  flex-direction: column
+
+.chat-room-list
+  flex-grow: 1
+  display: flex
+  align-items: stretch
+
+.chat-room-tab > a
   display: block
   line-height: 35px
   min-height: 35px

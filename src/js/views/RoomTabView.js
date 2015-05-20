@@ -4,11 +4,11 @@ Backbone.$ = $;
 
 module.exports = Backbone.View.extend({
     tagName: "div",
-    className: "message",
-    template: require("../templates/message.handlebars"),
+    className: "chat-room-tab",
+    template: require("../templates/roomTab.handlebars"),
 
     initialize: function () {
-        
+
     },
 
     render: function () {

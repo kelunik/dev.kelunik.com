@@ -4,16 +4,11 @@ Backbone.$ = $;
 
 var Input = require("../models/Input");
 var Message = require("../models/Message");
-var MessageList = require("../models/MessageList");
-var Room = require("../models/Room");
-var RoomList = require("../models/RoomList");
-var InputView = require("./InputView");
-var MessageListView = require("./MessageListView");
-var RoomListView = require("./RoomListView");
 
 module.exports = Backbone.View.extend({
     el: "body",
     template: require("../templates/app.handlebars"),
+    view: null,
 
     initialize: function () {
         this.render();
@@ -23,7 +18,13 @@ module.exports = Backbone.View.extend({
         this.$el.html(this.template());
     },
 
+    getView: function () {
+        return this.view;
+    },
+
     setView: function (view) {
+        this.view = view;
+
         this.$el.find("main").html("");
         this.$el.find("main").append(view.render().el);
     }
