@@ -37,11 +37,13 @@ if (window.top != window.self) {
                 name: "Two Crowns"
             });
 
-            room.get("messages").add(new Message({
-                text: "blah!",
-                authorName: "foo",
-                authorAvatar: "https://avatars1.githubusercontent.com/u/2743004?v=3&s=460"
-            }));
+            for (var i = 0; i < 10; i++) {
+                room.get("messages").add(new Message({
+                    text: "blah!",
+                    authorName: "foo",
+                    authorAvatar: "https://avatars1.githubusercontent.com/u/2743004?v=3&s=460"
+                }));
+            }
 
             chat.get("rooms").add(room);
             chat.get("rooms").add(new Room({
