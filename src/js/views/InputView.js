@@ -9,7 +9,8 @@ module.exports = Backbone.View.extend({
 
     events: {
         "input .message-input-text": "onInput",
-        "keydown .message-input-text": "onKeyDown"
+        "keydown .message-input-text": "onKeyDown",
+        "click .message-input-send": "onSend"
     },
 
     initialize: function () {
@@ -51,9 +52,19 @@ module.exports = Backbone.View.extend({
         }
     },
 
+    onSend: function (event) {
+        event.preventDefault();
+        this.submit();
+
+        return false;
+    },
+
     submit: function () {
         console.log(this.input.value);
+
         this.input.value = "";
+        this.input.focus();
+
         this.adjust();
     },
 
