@@ -40,5 +40,7 @@ module.exports = Backbone.View.extend({
         this.$el.find(".chat-main").append(this.messageListView.render().el);
         this.$el.find(".chat-main").append(this.inputView.render().el);
         this.$el.find(".chat-rooms").append(this.roomListView.render().el);
+
+        return this;
     }
 });
