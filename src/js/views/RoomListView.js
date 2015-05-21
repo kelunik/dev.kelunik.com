@@ -10,10 +10,13 @@ module.exports = Backbone.View.extend({
 
     initialize: function (options) {
         this.vent = options.vent;
+        this.listenTo(this.vent, "socket:message:whereami", this.refresh);
         this.listenTo(this.collection, "add", this.renderSingle);
     },
 
     render: function () {
+        this.$el.html("");
+
         this.collection.each(function (room) {
             this.renderSingle(room);
         }, this);
@@ -26,5 +29,11 @@ module.exports = Backbone.View.extend({
         this.$el.append(view.render().el);
 
         return this;
+    },
+
+    refresh: function (rooms) {
+        rooms.forEach(function (room) {
+            this.collection.add(room);
+        }.bind(this));
     }
 });

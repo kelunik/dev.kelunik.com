@@ -27,7 +27,7 @@ module.exports = function (vent, url) {
                 self.queue = [];
 
                 if (queue.length > 0) {
-                    vent.trigger("socket:send", "pipeline", queue);
+                    vent.trigger("socket:send", "lost-push", queue);
                 }
 
                 vent.trigger("socket:open", e);
@@ -80,7 +80,7 @@ module.exports = function (vent, url) {
 
             console.log(" → out  ", type, data);
         } else {
-            if (type === "pipeline") {
+            if (type === "lost-push") {
                 data.forEach(function (o) {
                     self.queue.push(o);
                 });

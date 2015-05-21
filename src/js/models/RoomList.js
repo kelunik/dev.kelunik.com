@@ -7,8 +7,9 @@ var Room = require("./Room");
 module.exports = Backbone.Collection.extend({
     model: Room,
 
-    initialize: function (vent) {
-        this.listenTo(vent, "socket:message:message", function (message) {
+    initialize: function (options) {
+        this.vent = options.vent;
+        this.listenTo(this.vent, "socket:message:message", function (message) {
             var room = this.findWhere({"id": message.roomId});
 
             message = {
