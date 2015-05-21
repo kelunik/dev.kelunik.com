@@ -8,7 +8,6 @@ if (window.top != window.self) {
     Backbone.$ = $;
 
     var AppView = require("./views/AppView");
-    var LoaderView = require("./views/LoaderView");
     var ChatView = require("./views/ChatView");
     var Chat = require("./models/Chat");
     var Room = require("./models/Room");
@@ -18,10 +17,8 @@ if (window.top != window.self) {
     var appView = new AppView;
 
     router.on("route:defaultRoute", function () {
-        appView.setView(new LoaderView);
-
         setTimeout(function () {
-            // Backbone.history.navigate("/rooms/1", true);
+            Backbone.history.navigate("/rooms/1", true);
         }, 1500);
     });
 

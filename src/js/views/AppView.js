@@ -7,7 +7,6 @@ var Message = require("../models/Message");
 
 module.exports = Backbone.View.extend({
     el: "body",
-    template: require("../templates/app.handlebars"),
     view: null,
 
     initialize: function () {
@@ -15,7 +14,7 @@ module.exports = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.html(this.template());
+
     },
 
     getView: function () {
