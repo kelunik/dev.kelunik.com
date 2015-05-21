@@ -15,6 +15,7 @@ if (window.top != window.self) {
     var Room = require("./models/Room");
     var Message = require("./models/Message");
     var Browser = require("./models/Browser");
+    var RoomList = require("./models/RoomList");
     var WebSocketHandler = require("./WebSocketHandler");
 
     var vent = _.extend({}, Backbone.Events);
@@ -44,7 +45,10 @@ if (window.top != window.self) {
         if (view instanceof ChatView) {
             view.switchRoom(roomId);
         } else {
-            var chat = new Chat;
+            var chat = new Chat({
+                rooms: new RoomList(vent)
+            });
+
             var room = new Room({
                 id: 1,
                 name: "Two Crowns"
@@ -60,11 +64,11 @@ if (window.top != window.self) {
 
             chat.get("rooms").add(room);
             chat.get("rooms").add(new Room({
-                id: 1337,
-                name: "Four Crowns"
+                id: 10,
+                name: "Dummy"
             }));
 
-            var chatView = new ChatView({model: chat});
+            var chatView = new ChatView({model: chat, vent: vent});
             appView.setView(chatView);
 
             chatView.switchRoom(roomId);

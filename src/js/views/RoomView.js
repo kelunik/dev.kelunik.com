@@ -17,14 +17,15 @@ module.exports = Backbone.View.extend({
         };
     },
 
-    initialize: function () {
+    initialize: function (options) {
+        this.vent = options.vent;
         this.messageView = new MessageListView({collection: this.model.get("messages")});
 
         this.input = new Input({
             room: this.model
         });
 
-        this.inputView = new InputView({model: this.input});
+        this.inputView = new InputView({model: this.input, vent: this.vent});
     },
 
     render: function () {

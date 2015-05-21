@@ -6,6 +6,6 @@ var RoomList = require("./RoomList");
 
 module.exports = Backbone.Model.extend({
     defaults: {
-        rooms: new RoomList
+        rooms: null
     }
 });

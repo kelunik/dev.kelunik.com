@@ -9,9 +9,10 @@ module.exports = Backbone.View.extend({
     el: "main",
     template: require("../templates/chat.handlebars"),
 
-    initialize: function () {
-        this.roomTabListView = new RoomTabListView({collection: this.model.get("rooms")});
-        this.roomListView = new RoomListView({collection: this.model.get("rooms")});
+    initialize: function (options) {
+        this.vent = options.vent;
+        this.roomTabListView = new RoomTabListView({collection: this.model.get("rooms"), vent: this.vent});
+        this.roomListView = new RoomListView({collection: this.model.get("rooms"), vent: this.vent});
     },
 
     render: function () {

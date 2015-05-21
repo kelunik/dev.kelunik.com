@@ -4,11 +4,12 @@ Backbone.$ = $;
 
 module.exports = Backbone.Model.extend({
     defaults: {
+        id: 0,
         authorId: 0,
         authorName: "",
         authorAvatar: "",
         text: "",
         html: "",
-        createdAt: 0
+        time: 0
     }
 });

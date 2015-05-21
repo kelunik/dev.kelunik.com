@@ -8,7 +8,8 @@ module.exports = Backbone.View.extend({
     tagName: "section",
     className: "chat-room-list",
 
-    initialize: function () {
+    initialize: function (options) {
+        this.vent = options.vent;
         this.listenTo(this.collection, "add", this.renderSingle);
     },
 
@@ -21,7 +22,7 @@ module.exports = Backbone.View.extend({
     },
 
     renderSingle: function (room) {
-        var view = new RoomView({model: room});
+        var view = new RoomView({model: room, vent: this.vent});
         this.$el.append(view.render().el);
 
         return this;
