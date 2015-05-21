@@ -9,9 +9,11 @@ if (window.top != window.self) {
 
     var AppView = require("./views/AppView");
     var ChatView = require("./views/ChatView");
+    var UnsupportedBrowserView = require("./views/UnsupportedBrowserView");
     var Chat = require("./models/Chat");
     var Room = require("./models/Room");
     var Message = require("./models/Message");
+    var Browser = require("./models/Browser");
 
     var router = new Router;
     var appView = new AppView;
@@ -54,6 +56,14 @@ if (window.top != window.self) {
             chatView.switchRoom(roomId);
         }
     });
+
+    if (typeof WebSocket === "undefined") {
+        appView.setView(new UnsupportedBrowserView({
+            model: new Browser
+        }));
+
+        return;
+    }
 
     Backbone.history.start({pushState: true});
 
