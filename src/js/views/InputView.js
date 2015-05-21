@@ -118,7 +118,7 @@ module.exports = Backbone.View.extend({
 
     adjust: function () {
         var toScroll = [];
-        var $messages = $(".messages");
+        var $messages = this.$el.parent().find(".messages");
 
         $messages.each(function (i, o) {
             toScroll.push(o.scrollHeight - o.scrollTop - o.clientHeight);
