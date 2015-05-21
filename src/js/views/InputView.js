@@ -15,12 +15,18 @@ module.exports = Backbone.View.extend({
     },
 
     initialize: function () {
-
+        this.listenTo(this.model, "change", this.render);
     },
 
     render: function () {
         this.$el.html(this.template(this.model.toJSON()));
         this.input = this.$el.find("textarea").get(0);
+
+        if (this.model.get("isEdit")) {
+            this.$el.addClass("message-input-edit");
+        } else {
+            this.$el.removeClass("message-input-edit");
+        }
 
         return this;
     },
@@ -32,7 +38,15 @@ module.exports = Backbone.View.extend({
     onKeyDown: function (event) {
         var value = this.input.value;
 
-        if (event.which === 13) {
+        if (event.which === 27) {
+            event.preventDefault();
+
+            this.model.set("isEdit", false);
+            this.input.value = "";
+            this.input.focus();
+
+            return false;
+        } else if (event.which === 13) {
             if (event.shiftKey) {
                 return;
             }
