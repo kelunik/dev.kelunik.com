@@ -4,6 +4,7 @@ if (window.top != window.self) {
     var Backbone = require("backbone");
     var Router = require("./Router");
     var $ = require("jquery");
+    var _ = require("backbone/node_modules/underscore");
 
     Backbone.$ = $;
 
@@ -14,9 +15,22 @@ if (window.top != window.self) {
     var Room = require("./models/Room");
     var Message = require("./models/Message");
     var Browser = require("./models/Browser");
+    var WebSocketHandler = require("./WebSocketHandler");
 
+    var vent = _.extend({}, Backbone.Events);
     var router = new Router;
     var appView = new AppView;
+
+    if (typeof WebSocket === "undefined") {
+        appView.setView(new UnsupportedBrowserView({
+            model: new Browser
+        }));
+
+        return;
+    }
+
+    var webSocketHandler = new WebSocketHandler(vent, "wss://dev.kelunik.com/chat");
+    webSocketHandler.connect();
 
     router.on("route:defaultRoute", function () {
         setTimeout(function () {
@@ -56,14 +70,6 @@ if (window.top != window.self) {
             chatView.switchRoom(roomId);
         }
     });
-
-    if (typeof WebSocket === "undefined") {
-        appView.setView(new UnsupportedBrowserView({
-            model: new Browser
-        }));
-
-        return;
-    }
 
     Backbone.history.start({pushState: true});
 

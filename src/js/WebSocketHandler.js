@@ -23,6 +23,13 @@ module.exports = function (vent, url) {
                 self.connected = true;
                 self.retries = 0;
 
+                var queue = self.queue;
+                self.queue = [];
+
+                if (queue.length > 0) {
+                    vent.trigger("socket:send", "pipeline", queue);
+                }
+
                 vent.trigger("socket:open", e);
             };
 
@@ -63,6 +70,50 @@ module.exports = function (vent, url) {
             }
         }
     };
+
+    vent.on("socket:send", function (type, data) {
+        if (self.connected) {
+            self.socket.send(JSON.stringify({
+                type: type,
+                data: data
+            }));
+
+            console.log(" → out  ", type, data);
+        } else {
+            if (type === "pipeline") {
+                data.forEach(function (o) {
+                    self.queue.push(o);
+                });
+            } else {
+                self.queue.push({
+                    type: type,
+                    data: data
+                });
+            }
+        }
+    });
+
+    vent.on("socket:message", function (event) {
+        var payload = null;
+
+        try {
+            payload = JSON.parse(event.data);
+        } catch (e) {
+            console.log("Invalid socket message", event);
+
+            return;
+        }
+
+        if (payload === null || !"type" in payload) {
+            console.log("Invalid socket payload", payload);
+
+            return;
+        }
+
+        console.log(" ← in   ", payload);
+
+        vent.trigger("socket:message:" + payload.type, payload.data || null);
+    });
 
     return self;
 };
