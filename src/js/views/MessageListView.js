@@ -21,7 +21,7 @@ module.exports = Backbone.View.extend({
     },
 
     renderSingle: function (message) {
-        var scroll = this.el.classList.contains("messages-active") && this.el.scrollTop >= this.el.scrollHeight - this.el.clientHeight - 1;
+        var scroll = this.el.scrollTop >= this.el.scrollHeight - this.el.clientHeight - 1;
 
         var view = new MessageView({model: message});
         this.$el.append(view.render().el);
