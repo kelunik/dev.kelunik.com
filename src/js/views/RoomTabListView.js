@@ -9,7 +9,7 @@ module.exports = Backbone.View.extend({
     className: "chat-room-tab-list",
 
     initialize: function () {
-        this.collection.on("add", this.renderSingle, this);
+        this.listenTo(this.collection, "add", this.renderSingle);
     },
 
     render: function () {
