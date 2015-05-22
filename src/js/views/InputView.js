@@ -1,4 +1,5 @@
 var Util = require("../Util");
+var App = require("../App");
 var Backbone = require("backbone");
 var _ = require("backbone/node_modules/underscore");
 var $ = require("jquery");
@@ -16,8 +17,7 @@ module.exports = Backbone.View.extend({
         "click .message-input-send": "onSend"
     },
 
-    initialize: function (options) {
-        this.vent = options.vent;
+    initialize: function () {
         this.listenTo(this.model, "change", this.render);
     },
 
@@ -127,7 +127,7 @@ module.exports = Backbone.View.extend({
         var roomId = this.model.get("room").get("id");
         var text = this.input.value;
 
-        this.vent.trigger("socket:send", "message", {
+        App.vent.trigger("socket:send", "message", {
             roomId: roomId,
             text: text,
             tempId: Util.generateToken(20)

@@ -1,10 +1,11 @@
 var Backbone = require("backbone");
 var _ = require("backbone/node_modules/underscore");
 var $ = require("jquery");
+var App = require("./App");
 
 Backbone.$ = $;
 
-module.exports = function (vent, url) {
+module.exports = function (url) {
     var self = {
         connected: false,
         explicitlyClosed: false,
@@ -27,18 +28,18 @@ module.exports = function (vent, url) {
                 self.queue = [];
 
                 if (queue.length > 0) {
-                    vent.trigger("socket:send", "lost-push", queue);
+                    App.vent.trigger("socket:send", "lost-push", queue);
                 }
 
-                vent.trigger("socket:open", e);
+                App.vent.trigger("socket:open", e);
             };
 
             self.socket.onerror = function (e) {
-                vent.trigger("socket:error", e);
+                App.vent.trigger("socket:error", e);
             };
 
             self.socket.onmessage = function (e) {
-                vent.trigger("socket:message", e);
+                App.vent.trigger("socket:message", e);
             };
 
             self.socket.onclose = function (e) {
@@ -54,10 +55,10 @@ module.exports = function (vent, url) {
                         self.connect();
                     }, connectTimeout);
 
-                    vent.trigger("socket:reconnectIn", connectTimeout);
+                    App.vent.trigger("socket:reconnectIn", connectTimeout);
                 }
 
-                vent.trigger("socket:close", e);
+                App.vent.trigger("socket:close", e);
             };
         },
 
@@ -71,7 +72,7 @@ module.exports = function (vent, url) {
         }
     };
 
-    vent.on("socket:send", function (type, data) {
+    App.vent.on("socket:send", function (type, data) {
         if (self.connected) {
             self.socket.send(JSON.stringify({
                 type: type,
@@ -93,7 +94,7 @@ module.exports = function (vent, url) {
         }
     });
 
-    vent.on("socket:message", function (event) {
+    App.vent.on("socket:message", function (event) {
         var payload = null;
 
         try {
@@ -110,9 +111,9 @@ module.exports = function (vent, url) {
             return;
         }
 
-        console.log(" ← in   ", payload);
+        console.log(" ← in   ", payload.type, payload.data || null);
 
-        vent.trigger("socket:message:" + payload.type, payload.data || null);
+        App.vent.trigger("socket:message:" + payload.type, payload.data || null);
     });
 
     return self;

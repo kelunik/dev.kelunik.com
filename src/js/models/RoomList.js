@@ -3,14 +3,13 @@ var $ = require("jquery");
 Backbone.$ = $;
 
 var Room = require("./Room");
+var App = require("../App");
 
 module.exports = Backbone.Collection.extend({
     model: Room,
 
-    initialize: function (models, options) {
-        this.vent = options.vent;
-
-        this.listenTo(this.vent, "socket:message:message", function (message) {
+    initialize: function () {
+        this.listenTo(App.vent, "socket:message:message", function (message) {
             var room = this.get(message.roomId);
 
             message = {
@@ -27,7 +26,7 @@ module.exports = Backbone.Collection.extend({
             }
         }.bind(this));
 
-        this.listenTo(this.vent, "socket:message:transcript", function (messages) {
+        this.listenTo(App.vent, "socket:message:transcript", function (messages) {
             var room = this.get(messages.roomId);
 
             if (room) {

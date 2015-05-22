@@ -2,10 +2,11 @@ var Favico = require("./vendor/favico.js");
 var Backbone = require("backbone");
 var _ = require("backbone/node_modules/underscore");
 var $ = require("jquery");
+var App = require("./App");
 
 Backbone.$ = $;
 
-module.exports = function (vent) {
+module.exports = function () {
     /* var favicon = new Favico({
      type: "circle",
      animation: "none",
@@ -79,7 +80,7 @@ module.exports = function (vent) {
         }
     };
 
-    vent.on("socket:message:ping", function (data) {
+    App.vent.on("socket:message:ping", function (data) {
         // TODO room name
         self.displayNotification("New message in ...", "You were mentioned by @" + data.user.name + ".",
             "https://avatars.githubusercontent.com/u/" + data.user.avatar + "?v=3&s=80");

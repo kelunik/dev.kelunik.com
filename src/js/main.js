@@ -2,29 +2,29 @@ if (window.top != window.self) {
     window.top.location.href = window.location.href;
 } else {
     var Backbone = require("backbone");
-    var Router = require("./Router");
     var $ = require("jquery");
     var _ = require("backbone/node_modules/underscore");
 
     Backbone.$ = $;
 
-    var AppView = require("./views/AppView");
     var ChatView = require("./views/ChatView");
     var UnsupportedBrowserView = require("./views/UnsupportedBrowserView");
     var Chat = require("./models/Chat");
     var Message = require("./models/Message");
     var Browser = require("./models/Browser");
     var RoomList = require("./models/RoomList");
-    var PingManager = require("./PingManager");
     var WebSocketHandler = require("./WebSocketHandler");
+    var Router = require("./Router");
+    var AppView = require("./views/AppView");
+    var PingManager = require("./PingManager");
+    var App = require("./App");
 
-    var vent = _.extend({}, Backbone.Events);
-    var router = new Router;
-    var appView = new AppView;
-    var pingManager = new PingManager(vent);
+    App.router = new Router;
+    App.appView = new AppView;
+    App.pingManager = new PingManager;
 
     if (typeof WebSocket === "undefined") {
-        appView.setView(new UnsupportedBrowserView({
+        App.appView.setView(new UnsupportedBrowserView({
             model: new Browser
         }));
 
@@ -42,35 +42,31 @@ if (window.top != window.self) {
         }
     });
 
-    var webSocketHandler = new WebSocketHandler(vent, "wss://dev.kelunik.com/chat");
+    var webSocketHandler = new WebSocketHandler("wss://dev.kelunik.com/chat");
     webSocketHandler.connect();
 
-    router.on("route:defaultRoute", function () {
+    App.router.on("route:defaultRoute", function () {
         setTimeout(function () {
             Backbone.history.navigate("/rooms/1", true);
         }, 1500);
     });
 
-    router.on("route:room", function (roomId) {
-        var view = appView.getView();
+    App.router.on("route:room", function (roomId) {
+        var view = App.appView.getView();
 
         if (view instanceof ChatView) {
             view.switchRoom(roomId);
         } else {
             var chat = new Chat({
-                rooms: new RoomList([], {
-                    vent: vent
-                })
+                rooms: new RoomList
             });
 
-            console.log(chat.get("rooms"));
-
-            var chatView = new ChatView({model: chat, vent: vent});
-            appView.setView(chatView);
+            var chatView = new ChatView({model: chat});
+            App.appView.setView(chatView);
 
             chatView.switchRoom(roomId);
 
-            vent.trigger("socket:send", "whereami", {join: roomId});
+            App.vent.trigger("socket:send", "whereami", {join: roomId});
         }
     });
 

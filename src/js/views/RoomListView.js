@@ -2,15 +2,15 @@ var Backbone = require("backbone");
 var $ = require("jquery");
 Backbone.$ = $;
 
+var App = require("../App");
 var RoomView = require("./RoomView");
 
 module.exports = Backbone.View.extend({
     tagName: "section",
     className: "chat-room-list",
 
-    initialize: function (options) {
-        this.vent = options.vent;
-        this.listenTo(this.vent, "socket:message:whereami", this.refresh);
+    initialize: function () {
+        this.listenTo(App.vent, "socket:message:whereami", this.refresh);
         this.listenTo(this.collection, "add", this.renderAppend);
         this.listenTo(this.collection, "unshift", this.renderPrepend);
     },
@@ -26,14 +26,14 @@ module.exports = Backbone.View.extend({
     },
 
     renderAppend: function (room) {
-        var view = new RoomView({model: room, vent: this.vent});
+        var view = new RoomView({model: room});
         this.$el.append(view.render().el);
 
         return this;
     },
 
     renderPrepend: function (room) {
-        var view = new RoomView({model: room, vent: this.vent});
+        var view = new RoomView({model: room});
         this.$el.prepend(view.render().el);
 
         return this;
@@ -43,7 +43,7 @@ module.exports = Backbone.View.extend({
         rooms.forEach(function (room) {
             this.collection.add(room);
 
-            this.vent.trigger("socket:send", "transcript", {
+            App.vent.trigger("socket:send", "transcript", {
                 roomId: room.id,
                 direction: "older",
                 messageId: -1
