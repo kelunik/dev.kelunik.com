@@ -25,9 +25,11 @@ module.exports = Backbone.View.extend({
         var view = new MessageView({model: message});
 
         if (options.at === 0) {
-            scroll = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
+            scroll = this.el.scrollHeight - this.el.scrollTop;
             this.$el.prepend(view.render().el);
-            this.el.scrollTop = this.el.scrollHeight - this.el.clientHeight - scroll;
+            this.el.scrollTop = this.el.scrollHeight - scroll;
+
+            console.log(this.el.scrollTop);
         } else {
             scroll = this.el.scrollTop >= this.el.scrollHeight - this.el.clientHeight - 1;
             this.$el.append(view.render().el);
