@@ -12,6 +12,7 @@ module.exports = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(this.model.get("rooms"), "add", this.switchRoom);
+        this.listenTo(this.model, "change", this.switchRoom);
 
         this.roomTabListView = new RoomTabListView({collection: this.model.get("rooms"), vent: this.vent});
         this.roomListView = new RoomListView({collection: this.model.get("rooms"), vent: this.vent});
