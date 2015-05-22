@@ -10,7 +10,6 @@ module.exports = Backbone.View.extend({
     className: "chat-room-list",
 
     initialize: function () {
-        this.listenTo(App.vent, "socket:message:whereami", this.refresh);
         this.listenTo(this.collection, "add", this.renderAppend);
         this.listenTo(this.collection, "unshift", this.renderPrepend);
     },
@@ -37,17 +36,5 @@ module.exports = Backbone.View.extend({
         this.$el.prepend(view.render().el);
 
         return this;
-    },
-
-    refresh: function (rooms) {
-        rooms.forEach(function (room) {
-            this.collection.add(room);
-
-            App.vent.trigger("socket:send", "transcript", {
-                roomId: room.id,
-                direction: "older",
-                messageId: -1
-            });
-        }.bind(this));
     }
 });

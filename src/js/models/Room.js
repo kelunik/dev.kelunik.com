@@ -34,7 +34,7 @@ module.exports = Backbone.Model.extend({
         }.bind(this));
 
         this.listenTo(App.vent, "socket:message:transcript", function (messages) {
-            if (message.roomId !== this.get("id")) {
+            if (messages.roomId !== this.get("id")) {
                 return;
             }
 

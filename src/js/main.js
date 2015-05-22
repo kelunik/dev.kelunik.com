@@ -55,17 +55,12 @@ if (window.top != window.self) {
         var view = App.appView.getView();
 
         if (view instanceof ChatView) {
-            view.switchRoom(roomId);
+            view.model.set("currentRoom", roomId);
         } else {
-            var chat = new Chat({
-                rooms: new RoomList
-            });
-
+            var chat = new Chat({currentRoom: roomId});
             var chatView = new ChatView({model: chat});
+
             App.appView.setView(chatView);
-
-            chatView.switchRoom(roomId);
-
             App.vent.trigger("socket:send", "whereami", {join: roomId});
         }
     });
