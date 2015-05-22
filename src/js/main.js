@@ -15,11 +15,13 @@ if (window.top != window.self) {
     var Message = require("./models/Message");
     var Browser = require("./models/Browser");
     var RoomList = require("./models/RoomList");
+    var PingManager = require("./PingManager");
     var WebSocketHandler = require("./WebSocketHandler");
 
     var vent = _.extend({}, Backbone.Events);
     var router = new Router;
     var appView = new AppView;
+    var pingManager = new PingManager(vent);
 
     if (typeof WebSocket === "undefined") {
         appView.setView(new UnsupportedBrowserView({
@@ -28,6 +30,17 @@ if (window.top != window.self) {
 
         return;
     }
+
+    // Chrome might need a user action for that
+    window.addEventListener("load", function () {
+        if (window.Notification && Notification.permission !== "granted") {
+            Notification.requestPermission(function (status) {
+                if (Notification.permission !== status) {
+                    Notification.permission = status;
+                }
+            });
+        }
+    });
 
     var webSocketHandler = new WebSocketHandler(vent, "wss://dev.kelunik.com/chat");
     webSocketHandler.connect();
