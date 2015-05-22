@@ -9,7 +9,6 @@ module.exports = Backbone.Model.extend({
         authorName: "",
         authorAvatar: "",
         text: "",
-        html: "",
         time: 0
     }
 });

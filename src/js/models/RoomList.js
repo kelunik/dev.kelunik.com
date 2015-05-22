@@ -10,7 +10,7 @@ module.exports = Backbone.Collection.extend({
     initialize: function (options) {
         this.vent = options.vent;
         this.listenTo(this.vent, "socket:message:message", function (message) {
-            var room = this.findWhere({"id": message.roomId});
+            var room = this.get(message.roomId);
 
             message = {
                 id: message.messageId,
@@ -18,7 +18,6 @@ module.exports = Backbone.Collection.extend({
                 authorName: message.user.name,
                 authorAvatar: "https://avatars0.githubusercontent.com/u/" + message.user.avatar + "?v=3&s=400",
                 text: message.messageText,
-                html: message.messageText,
                 time: message.time
             };
 
