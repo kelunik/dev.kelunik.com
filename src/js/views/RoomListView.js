@@ -10,8 +10,7 @@ module.exports = Backbone.View.extend({
     className: "chat-room-list",
 
     initialize: function () {
-        this.listenTo(this.collection, "add", this.renderAppend);
-        this.listenTo(this.collection, "unshift", this.renderPrepend);
+        this.listenTo(this.collection, "add", this.renderSingle);
     },
 
     render: function () {
@@ -24,16 +23,9 @@ module.exports = Backbone.View.extend({
         return this;
     },
 
-    renderAppend: function (room) {
+    renderSingle: function (room) {
         var view = new RoomView({model: room});
         this.$el.append(view.render().el);
-
-        return this;
-    },
-
-    renderPrepend: function (room) {
-        var view = new RoomView({model: room});
-        this.$el.prepend(view.render().el);
 
         return this;
     }

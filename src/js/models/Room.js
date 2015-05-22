@@ -11,11 +11,26 @@ module.exports = Backbone.Model.extend({
             id: 0,
             name: "",
             image: "",
-            messages: new MessageList
+            messages: new MessageList,
+            initialPayloadSent: false,
+            firstMessage: -1,
+            lastMessage: -1,
+            firstLoadableMessage: -1,
+            transcriptPending: false
         };
     },
 
     initialize: function () {
+        this.listenTo(this.get("messages"), "add", function (message) {
+            if (message.get("id") < this.get("firstMessage") || this.get("firstMessage") === -1) {
+                this.set("firstMessage", message.get("id"));
+            }
+
+            if (message.get("id") > this.get("lastMessage")) {
+                this.set("lastMessage", message.get("id"));
+            }
+        });
+
         this.listenTo(App.vent, "socket:message:message", function (message) {
             if (message.roomId !== this.get("id")) {
                 return;
@@ -38,7 +53,9 @@ module.exports = Backbone.Model.extend({
                 return;
             }
 
-            messages.messages.reverse().forEach(function (message) {
+            this.set("transcriptPending", false);
+
+            messages.messages.forEach(function (message) {
                 message = {
                     id: message.messageId,
                     authorId: message.user.id,
@@ -50,6 +67,10 @@ module.exports = Backbone.Model.extend({
 
                 this.get("messages").unshift(message);
             }.bind(this));
+
+            if (messages.messages.length < 40) {
+                this.set("firstLoadableMessage", this.get("firstMessage"));
+            }
         }.bind(this));
     }
 });

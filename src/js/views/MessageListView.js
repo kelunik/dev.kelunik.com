@@ -20,14 +20,21 @@ module.exports = Backbone.View.extend({
         return this;
     },
 
-    renderSingle: function (message) {
-        var scroll = this.el.scrollTop >= this.el.scrollHeight - this.el.clientHeight - 1;
-
+    renderSingle: function (message, collection, options) {
+        var scroll;
         var view = new MessageView({model: message});
-        this.$el.append(view.render().el);
 
-        if (scroll) {
-            this.el.scrollTop = this.el.scrollHeight;
+        if (options.at === 0) {
+            scroll = this.el.scrollHeight - this.el.scrollTop - this.el.clientHeight;
+            this.$el.prepend(view.render().el);
+            this.el.scrollTop = this.el.scrollHeight - this.el.clientHeight - scroll;
+        } else {
+            scroll = this.el.scrollTop >= this.el.scrollHeight - this.el.clientHeight - 1;
+            this.$el.append(view.render().el);
+
+            if (scroll) {
+                this.el.scrollTop = this.el.scrollHeight;
+            }
         }
     }
 });
