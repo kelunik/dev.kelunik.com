@@ -14,12 +14,6 @@ module.exports = Backbone.Collection.extend({
         this.listenTo(App.vent, "socket:message:whereami", function (rooms) {
             rooms.forEach(function (room) {
                 self.add(room);
-
-                App.vent.trigger("socket:send", "transcript", {
-                    roomId: room.id,
-                    direction: "older",
-                    messageId: -1
-                });
             });
         });
     }

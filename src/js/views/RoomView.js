@@ -19,8 +19,7 @@ module.exports = Backbone.View.extend({
         };
     },
 
-    initialize: function (options) {
-        this.vent = options.vent;
+    initialize: function () {
         this.messageView = new MessageListView({collection: this.model.get("messages")});
 
         this.input = new Input({
@@ -28,6 +27,7 @@ module.exports = Backbone.View.extend({
         });
 
         this.inputView = new InputView({model: this.input, vent: this.vent});
+        this.listenTo(this.model, "focus", this.onFocus);
     },
 
     render: function () {
@@ -59,5 +59,20 @@ module.exports = Backbone.View.extend({
                 messageId: this.model.get("firstMessage")
             });
         }
+    },
+
+    onFocus: function () {
+        if (this.model.get("initialPayloadSent")) {
+            return;
+        }
+
+        this.model.set("initialPayloadSent", true);
+        this.model.set("transcriptPending", true);
+
+        App.vent.trigger("socket:send", "transcript", {
+            roomId: this.model.get("id"),
+            direction: "older",
+            messageId: -1
+        });
     }
 });

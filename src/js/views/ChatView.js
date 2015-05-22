@@ -31,5 +31,11 @@ module.exports = Backbone.View.extend({
 
         $(".chat-room-current").removeClass("chat-room-current");
         $("#room-" + roomId).addClass("chat-room-current");
+
+        var room = this.model.get("rooms").get(roomId);
+
+        if (room) {
+            room.trigger("focus");
+        }
     }
 });
