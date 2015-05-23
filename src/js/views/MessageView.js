@@ -28,22 +28,6 @@ module.exports = Backbone.View.extend({
         var fragment = document.createDocumentFragment();
         fragment.innerHTML = this.template(data);
 
-        fragment.querySelectorAll("img").forEach(function (img) {
-            // currently we can't allow images, because they're mixed content,
-            // which we want to avoid, sorry. Just replace those images with a link.
-            var link = document.createElement("a");
-            link.href = img.src;
-            link.textContent = img.src;
-            img.parentNode.replaceChild(link, img);
-        });
-
-        /* DocumentFragment doesn't have getElementsByTagName */
-        fragment.querySelectorAll("a").forEach(function (o) {
-            if (o.host !== window.location.host) {
-                o.setAttribute("target", "_blank");
-            }
-        });
-
         this.$el.html(fragment.innerHTML);
 
         var content = this.el.querySelector(".message-content");
@@ -54,6 +38,21 @@ module.exports = Backbone.View.extend({
                 name: data.replyUser
             }));
         }
+
+        content.querySelectorAll("img").forEach(function (img) {
+            // currently we can't allow images, because they're mixed content,
+            // which we want to avoid, sorry. Just replace those images with a link.
+            var link = document.createElement("a");
+            link.href = img.src;
+            link.textContent = img.src;
+            img.parentNode.replaceChild(link, img);
+        });
+
+        content.getElementsByTagName("a").forEach(function (o) {
+            if (o.host !== window.location.host) {
+                o.setAttribute("target", "_blank");
+            }
+        });
 
         return this;
     },
