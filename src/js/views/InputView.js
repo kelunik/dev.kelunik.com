@@ -69,6 +69,7 @@ module.exports = Backbone.View.extend({
     onEscape: function (event) {
         event.preventDefault();
 
+        this.replyTo(null);
         this.model.set("isEdit", false);
         this.input.value = "";
         this.input.focus();
@@ -232,6 +233,7 @@ module.exports = Backbone.View.extend({
         this.input.value = "";
         this.input.focus();
 
+        this.replyTo(null);
         this.adjust();
     },
 
