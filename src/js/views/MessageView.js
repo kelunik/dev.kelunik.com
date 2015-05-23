@@ -18,10 +18,16 @@ module.exports = Backbone.View.extend({
     },
 
     initialize: function () {
-
+        this.listenTo(this.model, "change", this.render);
     },
 
     render: function () {
+        var scroll = 0;
+
+        if (this.el.parentNode) {
+            scroll = this.el.parentNode.scrollHeight - this.el.parentNode.scrollTop;
+        }
+
         var data = this.model.toJSON();
         data.text = data.text.replace(/^:\d+ ?/g, "");
 
@@ -53,6 +59,10 @@ module.exports = Backbone.View.extend({
                 o.setAttribute("target", "_blank");
             }
         });
+
+        if (this.el.parentNode) {
+            this.el.parentNode.scrollTop = this.el.parentNode.scrollHeight - scroll;
+        }
 
         return this;
     },

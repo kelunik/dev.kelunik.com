@@ -18,26 +18,23 @@ module.exports = Backbone.View.extend({
     },
 
     initialize: function () {
-        this.listenTo(this.model, "change:isEdit", function () {
-            if (this.model.get("isEdit")) {
-                this.$el.addClass("message-input-edit");
-            } else {
-                this.$el.removeClass("message-input-edit");
-            }
-        });
+        this.listenTo(this.model, "change:editId", this.onEditChange);
     },
 
     render: function () {
         this.$el.html(this.template(this.model.toJSON()));
         this.input = this.$el.find("textarea").get(0);
+        this.onEditChange();
 
-        if (this.model.get("isEdit")) {
+        return this;
+    },
+
+    onEditChange: function () {
+        if (this.model.get("editId")) {
             this.$el.addClass("message-input-edit");
         } else {
             this.$el.removeClass("message-input-edit");
         }
-
-        return this;
     },
 
     onInput: function () {
@@ -70,9 +67,7 @@ module.exports = Backbone.View.extend({
         event.preventDefault();
 
         this.replyTo(null);
-        this.model.set("isEdit", false);
-        this.input.value = "";
-        this.input.focus();
+        this.edit(null);
 
         return false;
     },
@@ -145,12 +140,12 @@ module.exports = Backbone.View.extend({
 
     onArrowUp: function (event) {
         var messages = this.model.get("room").get("messages");
+        var currentId, currentModel, currentIndex, previousIndex, previousModel;
 
         if (event.ctrlKey || event.altKey) {
-            var currentId = this.model.get("replyTo");
-            var currentModel = messages.get(currentId);
-            var currentIndex = currentModel ? messages.indexOf(currentModel) : null;
-            var previousIndex;
+            currentId = this.model.get("replyTo");
+            currentModel = messages.get(currentId);
+            currentIndex = currentModel ? messages.indexOf(currentModel) : null;
 
             if (currentIndex) {
                 previousIndex = currentIndex - 1;
@@ -158,11 +153,30 @@ module.exports = Backbone.View.extend({
                 previousIndex = messages.length - 1;
             }
 
-            var previousModel = messages.at(previousIndex);
+            previousModel = messages.at(previousIndex);
 
             if (previousModel) {
                 event.preventDefault();
                 this.replyTo(previousModel.get("id"));
+                return false;
+            }
+        } else {
+            var filter = messages.where({authorId: App.user.get("id")});
+            currentId = this.model.get("editId");
+            currentModel = messages.get(currentId);
+            currentIndex = currentModel ? filter.indexOf(currentModel) : null;
+
+            if (currentIndex) {
+                previousIndex = currentIndex - 1;
+            } else {
+                previousIndex = messages.length - 1;
+            }
+
+            previousModel = filter[previousIndex];
+
+            if (previousModel) {
+                event.preventDefault();
+                this.edit(previousModel.get("id"));
                 return false;
             }
         }
@@ -170,11 +184,12 @@ module.exports = Backbone.View.extend({
 
     onArrowDown: function (event) {
         var messages = this.model.get("room").get("messages");
+        var currentId, currentModel, currentIndex, nextIndex, nextModel;
 
         if (event.ctrlKey || event.altKey) {
-            var currentId = this.model.get("replyTo");
-            var currentModel = messages.get(currentId);
-            var currentIndex = currentModel ? messages.indexOf(currentModel) : null;
+            currentId = this.model.get("replyTo");
+            currentModel = messages.get(currentId);
+            currentIndex = currentModel ? messages.indexOf(currentModel) : null;
 
             if (!currentIndex) {
                 return;
@@ -182,10 +197,28 @@ module.exports = Backbone.View.extend({
 
             event.preventDefault();
 
-            var nextIndex = currentIndex + 1;
-            var nextModel = messages.at(nextIndex);
+            nextIndex = currentIndex + 1;
+            nextModel = messages.at(nextIndex);
 
             this.replyTo(nextModel ? nextModel.get("id") : null);
+
+            return false;
+        } else {
+            var filter = messages.where({authorId: App.user.get("id")});
+            currentId = this.model.get("editId");
+            currentModel = messages.get(currentId);
+            currentIndex = currentModel ? filter.indexOf(currentModel) : null;
+
+            if (!currentIndex) {
+                return;
+            }
+
+            event.preventDefault();
+
+            nextIndex = currentIndex + 1;
+            nextModel = filter[nextIndex];
+
+            this.edit(nextModel ? nextModel.get("id") : null);
 
             return false;
         }
@@ -221,14 +254,44 @@ module.exports = Backbone.View.extend({
     },
 
     submit: function () {
-        var roomId = this.model.get("room").get("id");
-        var text = this.input.value;
+        var text = this.input.value.trim();
 
-        App.vent.trigger("socket:send", "message", {
-            roomId: roomId,
-            text: text,
-            tempId: Util.generateToken(20)
-        });
+        if (text === "") {
+            this.replyTo(null);
+            this.edit(null);
+
+            return;
+        }
+
+        var roomId = this.model.get("room").get("id")
+        var edit = this.model.get("editId");
+        var token = Util.generateToken(20);
+
+        if (edit) {
+            var model = this.model.get("room").get("messages").get(edit);
+
+            if (model.get("text").trim() === text) {
+                this.replyTo(null);
+                this.edit(null);
+                return;
+            }
+
+            App.vent.trigger("socket:send", "message-edit", {
+                messageId: edit,
+                text: text,
+                tempId: token
+            });
+
+            this.edit(null);
+        } else {
+            App.vent.trigger("socket:send", "message", {
+                roomId: roomId,
+                text: text,
+                tempId: token
+            });
+
+            // TODO clear visible pings
+        }
 
         this.input.value = "";
         this.input.focus();
@@ -261,5 +324,24 @@ module.exports = Backbone.View.extend({
             var scroll = toScroll.shift();
             o.scrollTop = o.scrollHeight - o.clientHeight - scroll;
         });
+    },
+
+    edit: function (id) {
+        if (id) {
+            var model = this.model.get("room").get("messages").get(id);
+
+            if (model) {
+                this.input.value = model.get("text");
+                this.model.set("editId", id);
+            } else {
+                this.input.value = "";
+                this.model.set("editId", null);
+            }
+        } else {
+            this.input.value = "";
+            this.model.set("editId", null);
+        }
+
+        this.input.focus();
     }
 });

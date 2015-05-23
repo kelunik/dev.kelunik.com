@@ -20,7 +20,7 @@ describe("Input", function () {
     it("should not be in edit mode after escape", function () {
         var inputView = new InputView({
             model: new Input({
-                isEdit: true
+                editId: 1
             })
         });
         inputView.render();

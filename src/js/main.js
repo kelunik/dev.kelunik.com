@@ -84,6 +84,12 @@ if (window.top != window.self) {
     var webSocketHandler = new WebSocketHandler("wss://dev.kelunik.com/chat");
     webSocketHandler.connect();
 
+    App.vent.on("socket:message:me", function (data) {
+        App.user.set(data);
+    });
+
+    App.vent.trigger("socket:send", "me");
+
     App.router.on("route:defaultRoute", function () {
         setTimeout(function () {
             Backbone.history.navigate("/rooms/1", true);

@@ -4,8 +4,7 @@ Backbone.$ = $;
 
 module.exports = Backbone.Model.extend({
     defaults: {
-        room: null,
-        editId: null,
-        replyTo: null
+        id: 0,
+        name: ""
     }
 });

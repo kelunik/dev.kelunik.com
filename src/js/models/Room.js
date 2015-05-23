@@ -48,7 +48,26 @@ module.exports = Backbone.Model.extend({
             };
 
             this.get("messages").add(message);
-        }.bind(this));
+        });
+
+        this.listenTo(App.vent, "socket:message:message-edit", function (message) {
+            if (message.roomId !== this.get("id")) {
+                return;
+            }
+
+            message = {
+                id: message.messageId,
+                authorId: message.user.id,
+                authorName: message.user.name,
+                authorAvatar: "https://avatars.githubusercontent.com/u/" + message.user.avatar + "?v=3&s=400",
+                text: message.text,
+                time: message.time,
+                replyId: message.reply ? message.reply.messageId : null,
+                replyUser: message.reply ? message.reply.user.name : null
+            };
+
+            this.get("messages").add(message, {merge: true});
+        });
 
         this.listenTo(App.vent, "socket:message:transcript", function (messages) {
             if (messages.roomId !== this.get("id")) {
@@ -75,6 +94,6 @@ module.exports = Backbone.Model.extend({
             if (messages.messages.length < 40) {
                 this.set("firstLoadableMessage", this.get("firstMessage"));
             }
-        }.bind(this));
+        });
     }
 });
