@@ -24,8 +24,8 @@ module.exports = {
         }
     },
     images: {
-        src: src + "/images/**",
-        dest: dest + "/images"
+        src: src + "/img/**",
+        dest: dest + "/img"
     },
     markup: {
         src: src + "/index.html",
