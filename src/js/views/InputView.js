@@ -192,16 +192,23 @@ module.exports = Backbone.View.extend({
 
     replyTo: function (id) {
         var value = this.input.value;
+        var reply = this.model.get("replyTo");
 
         if (id) {
-            var reply = this.model.get("replyTo");
-
             if (reply) {
                 this.input.value = value.replace(":" + reply, ":" + id);
+
+                document.getElementById(reply).classList.remove("input-reply");
             } else {
                 this.input.value = ":" + id + " " + value;
             }
+
+            document.getElementById(id).classList.add("input-reply");
         } else {
+            if (reply) {
+                document.getElementById(reply).classList.remove("input-reply");
+            }
+
             this.input.value = value.replace(/^:\d+ ?/, "");
         }
 
