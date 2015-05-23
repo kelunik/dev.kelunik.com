@@ -7,6 +7,10 @@ var MessageView = require("./MessageView");
 module.exports = Backbone.View.extend({
     tagName: "section",
     className: "messages",
+    events: {
+        "mouseenter .message": "onMouseEnter",
+        "mouseleave .message": "onMouseLeave"
+    },
 
     initialize: function () {
         this.listenTo(this.collection, "add", this.renderSingle);
@@ -36,5 +40,45 @@ module.exports = Backbone.View.extend({
                 this.el.scrollTop = Math.ceil(this.el.scrollHeight) + 1;
             }
         }
+    },
+
+    onMouseEnter: function (event) {
+        var el = event.currentTarget;
+        var id = el.getAttribute("id");
+
+        var model = this.collection.get(id);
+
+        if (model) {
+            var replyTo = model.get("replyId");
+
+            if (replyTo) {
+                var replyToNode = document.getElementById(replyTo);
+                replyToNode.classList.add("message-highlight");
+            }
+        }
+
+        document.querySelectorAll(".message[data-reply='" + id + "']").forEach(function (o) {
+            o.classList.add("message-highlight");
+        });
+    },
+
+    onMouseLeave: function (event) {
+        var el = event.currentTarget;
+        var id = el.getAttribute("id");
+
+        var model = this.collection.get(id);
+
+        if (model) {
+            var replyTo = model.get("replyId");
+
+            if (replyTo) {
+                var replyToNode = document.getElementById(replyTo);
+                replyToNode.classList.remove("message-highlight");
+            }
+        }
+
+        document.querySelectorAll(".message[data-reply='" + id + "']").forEach(function (o) {
+            o.classList.remove("message-highlight");
+        });
     }
 });

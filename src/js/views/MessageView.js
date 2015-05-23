@@ -10,7 +10,8 @@ module.exports = Backbone.View.extend({
     attributes: function () {
         return {
             tabindex: "0",
-            "id": this.model.get("id")
+            "id": this.model.get("id"),
+            "data-reply": this.model.get("replyId")
         };
     },
     events: {
