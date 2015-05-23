@@ -19,6 +19,7 @@
   "dependencies": {
     "autolinker": "0.15.x",
     "backbone": "^1.1.2",
+    "gulp-concat": "^2.5.2",
     "jquery": "^2.1.4",
     "moment": "2.9.x",
     "remarkable": "^1.6.0",

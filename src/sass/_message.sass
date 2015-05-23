@@ -11,6 +11,8 @@
     background-color: rgba(0, 0, 0, .025)
   &:focus
     background-color: rgba(0, 100, 200, .05)
+  &:target
+    background-color: #ffc
 
 .message-own
   background-color: rgba(241, 156, 114, 0.10)
@@ -44,3 +46,44 @@
   flex-shrink: 1
   word-wrap: break-word
   padding-right: 15px
+
+.message pre, code
+  white-space: pre-wrap !important
+  word-wrap: break-word
+
+.message blockquote
+  padding: 0 10px
+  margin: 0 5px
+  border-left: 1px dotted rgba(0, 0, 0, .3)
+
+.message pre code
+  display: block !important
+  color: #333 !important
+  line-height: 16px
+  padding: 8px 0
+
+.chat-message pre
+  margin: 5px 0
+
+.chat-message code
+  background: #fafafa
+  padding: 3px 5px
+  border-radius: 3px
+  line-height: 14px
+  color: #333
+  font-size: 14px
+  font-family: "Source Code Pro", monospace
+
+.in-reply
+  cursor: pointer
+  display: inline-block
+  color: inherit
+  &:hover
+    text-decoration: none
+
+.in-reply::before
+  content: "\f112"
+  display: inline-block
+  font: normal normal normal 14px/1 "FontAwesome"
+  transform: translateY(-1px) rotate(90deg) scale(.75, -.75)
+  font-size: inherit

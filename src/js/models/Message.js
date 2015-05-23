@@ -9,6 +9,8 @@ module.exports = Backbone.Model.extend({
         authorName: "",
         authorAvatar: "",
         text: "",
-        time: 0
+        time: 0,
+        replyId: null,
+        replyUser: null
     }
 });

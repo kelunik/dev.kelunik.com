@@ -11,6 +11,10 @@ module.exports = {
             middleware: [historyApiFallback()]
         }
     },
+    css: {
+        src: src + "/js/vendor/highlight.js/styles/docco.css",
+        dest: dest
+    },
     sass: {
         src: src + "/sass/**/*.sass",
         dest: dest,

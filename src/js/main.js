@@ -1,23 +1,62 @@
+require("./extend.js");
+
 if (window.top != window.self) {
     window.top.location.href = window.location.href;
 } else {
     var Backbone = require("backbone");
     var $ = require("jquery");
-    var _ = require("backbone/node_modules/underscore");
-
     Backbone.$ = $;
 
+    var _ = require("backbone/node_modules/underscore");
     var ChatView = require("./views/ChatView");
     var UnsupportedBrowserView = require("./views/UnsupportedBrowserView");
     var Chat = require("./models/Chat");
     var Message = require("./models/Message");
     var Browser = require("./models/Browser");
-    var RoomList = require("./models/RoomList");
     var WebSocketHandler = require("./WebSocketHandler");
     var Router = require("./Router");
     var AppView = require("./views/AppView");
     var PingManager = require("./PingManager");
     var App = require("./App");
+    var Remarkable = require("remarkable");
+    var Handlebars = require("hbsfy/runtime");
+    var hljs = require("./vendor/highlight.js");
+
+    var remarkable = new Remarkable("full", {
+        html: false,
+        xhtmlOut: false,
+        breaks: true,
+        langPrefix: "language-",
+        linkify: true,
+        typographer: true,
+        quotes: "“”‘’",
+
+        highlight: function (str, lang) {
+            if (lang === "text" || lang === "plain" || lang === "nohighlight" || lang === "no-highlight") {
+                return "";
+            }
+
+            if (lang && hljs.getLanguage(lang)) {
+                try {
+                    return hljs.highlight(lang, str).value;
+                } catch (err) {
+                    // default
+                }
+            }
+
+            try {
+                return hljs.highlightAuto(str).value;
+            } catch (err) {
+                // default
+            }
+
+            return ""; // use external default escaping
+        }
+    });
+
+    Handlebars.registerHelper("markdown", function (text) {
+        return new Handlebars.SafeString(remarkable.render(text));
+    });
 
     App.router = new Router;
     App.appView = new AppView;

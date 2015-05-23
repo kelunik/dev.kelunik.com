@@ -42,7 +42,9 @@ module.exports = Backbone.Model.extend({
                 authorName: message.user.name,
                 authorAvatar: "https://avatars.githubusercontent.com/u/" + message.user.avatar + "?v=3&s=400",
                 text: message.messageText,
-                time: message.time
+                time: message.time,
+                replyId: message.reply ? message.reply.messageId : null,
+                replyUser: message.reply ? message.reply.user.name : null
             };
 
             this.get("messages").add(message);
@@ -62,7 +64,9 @@ module.exports = Backbone.Model.extend({
                     authorName: message.user.name,
                     authorAvatar: "https://avatars.githubusercontent.com/u/" + message.user.avatar + "?v=3&s=400",
                     text: message.messageText,
-                    time: message.time
+                    time: message.time,
+                    replyId: message.reply ? message.reply.messageId : null,
+                    replyUser: message.reply ? message.reply.user.name : null
                 };
 
                 this.get("messages").unshift(message);
