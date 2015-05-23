@@ -18,7 +18,13 @@ module.exports = Backbone.View.extend({
     },
 
     initialize: function () {
-
+        this.listenTo(this.model, "change:isEdit", function () {
+            if (this.model.get("isEdit")) {
+                this.$el.addClass("message-input-edit");
+            } else {
+                this.$el.removeClass("message-input-edit");
+            }
+        });
     },
 
     render: function () {
