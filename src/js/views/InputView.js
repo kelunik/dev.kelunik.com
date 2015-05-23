@@ -169,7 +169,7 @@ module.exports = Backbone.View.extend({
             if (currentIndex) {
                 previousIndex = currentIndex - 1;
             } else {
-                previousIndex = messages.length - 1;
+                previousIndex = filter.length - 1;
             }
 
             previousModel = filter[previousIndex];
