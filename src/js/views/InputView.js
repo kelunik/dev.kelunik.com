@@ -18,7 +18,7 @@ module.exports = Backbone.View.extend({
     },
 
     initialize: function () {
-        this.listenTo(this.model, "change", this.render);
+
     },
 
     render: function () {
@@ -39,36 +39,17 @@ module.exports = Backbone.View.extend({
     },
 
     onKeyDown: function (event) {
-        var value = this.input.value;
-
-        if (event.which === 27) {
-            event.preventDefault();
-
-            this.model.set("isEdit", false);
-            this.input.value = "";
-            this.input.focus();
-
-            return false;
-        } else if (event.which === 13) {
-            if (event.shiftKey) {
-                return;
-            }
-
-            if (event.ctrlKey) {
-                event.preventDefault();
-                this.submit();
-
-                return false;
-            }
-
-            if (value.indexOf("\n") === -1) {
-                event.preventDefault();
-                this.submit();
-
-                return false;
-            }
-        } else if (event.which === 9) {
-            return this.onTab(event);
+        switch (event.which) {
+            case 27:
+                return this.onEscape(event);
+            case 13:
+                return this.onEnter(event);
+            case 9:
+                return this.onTab(event);
+            case 38:
+                return this.onArrowUp(event);
+            case 40:
+                return this.onArrowDown(event);
         }
     },
 
@@ -77,6 +58,38 @@ module.exports = Backbone.View.extend({
         this.submit();
 
         return false;
+    },
+
+    onEscape: function (event) {
+        event.preventDefault();
+
+        this.model.set("isEdit", false);
+        this.input.value = "";
+        this.input.focus();
+
+        return false;
+    },
+
+    onEnter: function (event) {
+        var value = this.input.value;
+
+        if (event.shiftKey) {
+            return;
+        }
+
+        if (event.ctrlKey) {
+            event.preventDefault();
+            this.submit();
+
+            return false;
+        }
+
+        if (value.indexOf("\n") === -1) {
+            event.preventDefault();
+            this.submit();
+
+            return false;
+        }
     },
 
     onTab: function (event) {
@@ -121,6 +134,76 @@ module.exports = Backbone.View.extend({
         }
 
         return false;
+    },
+
+    onArrowUp: function (event) {
+        var messages = this.model.get("room").get("messages");
+
+        if (event.ctrlKey) {
+            var currentId = this.model.get("replyTo");
+            var currentModel = messages.get(currentId);
+            var currentIndex = currentModel ? messages.indexOf(currentModel) : null;
+            var previousIndex;
+
+            if (currentIndex) {
+                previousIndex = currentIndex - 1;
+            } else {
+                previousIndex = messages.length - 1;
+            }
+
+            var previousModel = messages.at(previousIndex);
+
+            if (previousModel) {
+                event.preventDefault();
+                this.replyTo(previousModel.get("id"));
+                return false;
+            }
+        }
+    },
+
+    onArrowDown: function (event) {
+        var messages = this.model.get("room").get("messages");
+
+        if (event.ctrlKey) {
+            var currentId = this.model.get("replyTo");
+            var currentModel = messages.get(currentId);
+            var currentIndex = currentModel ? messages.indexOf(currentModel) : null;
+
+            if (!currentIndex) {
+                return;
+            }
+
+            event.preventDefault();
+
+            var nextIndex = currentIndex + 1;
+            var nextModel = messages.at(nextIndex);
+
+            this.replyTo(nextModel ? nextModel.get("id") : null);
+
+            return false;
+        }
+    },
+
+    replyTo: function (id) {
+        var value = this.input.value;
+
+        if (id) {
+            var reply = this.model.get("replyTo");
+
+            if (reply) {
+                this.input.value = value.replace(":" + reply, ":" + id);
+            } else {
+                this.input.value = ":" + id + " " + value;
+            }
+        } else {
+            this.input.value = value.replace(/^:\d+ ?/, "");
+        }
+
+        this.model.set("replyTo", id);
+
+        this.input.focus();
+        this.input.selectionStart = this.input.selectionEnd = this.input.value.length;
+        this.adjust();
     },
 
     submit: function () {
