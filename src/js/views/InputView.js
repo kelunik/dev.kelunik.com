@@ -139,7 +139,7 @@ module.exports = Backbone.View.extend({
     onArrowUp: function (event) {
         var messages = this.model.get("room").get("messages");
 
-        if (event.ctrlKey) {
+        if (event.ctrlKey || event.altKey) {
             var currentId = this.model.get("replyTo");
             var currentModel = messages.get(currentId);
             var currentIndex = currentModel ? messages.indexOf(currentModel) : null;
@@ -164,7 +164,7 @@ module.exports = Backbone.View.extend({
     onArrowDown: function (event) {
         var messages = this.model.get("room").get("messages");
 
-        if (event.ctrlKey) {
+        if (event.ctrlKey || event.altKey) {
             var currentId = this.model.get("replyTo");
             var currentModel = messages.get(currentId);
             var currentIndex = currentModel ? messages.indexOf(currentModel) : null;
