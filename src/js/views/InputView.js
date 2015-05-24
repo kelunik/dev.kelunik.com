@@ -42,7 +42,7 @@ module.exports = Backbone.View.extend({
 
         var match = /^:(\d+)/.exec(this.input.value);
 
-        if (1 * match[1] !== this.model.get("replyTo")) {
+        if (match && 1 * match[1] !== this.model.get("replyTo")) {
             this.replyTo(null);
         }
 
@@ -289,7 +289,7 @@ module.exports = Backbone.View.extend({
             return;
         }
 
-        var roomId = this.model.get("room").get("id")
+        var roomId = this.model.get("room").get("id");
         var edit = this.model.get("editId");
         var token = Util.generateToken(20);
 
