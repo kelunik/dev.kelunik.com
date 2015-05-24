@@ -11,12 +11,22 @@ module.exports = Backbone.View.extend({
     template: require("../templates/member.handlebars"),
 
     initialize: function () {
+        this.listenTo(App.vent, "socket:message:activity", function (data) {
+            if (data.userId === this.model.get("id")) {
+                this.model.set("state", data.state);
+            }
+        });
 
+        this.listenTo(this.model, "change:state", this.onStateChange);
     },
 
     render: function () {
         this.$el.html(this.template(this.model.toJSON()));
 
         return this;
+    },
+
+    onStateChange: function () {
+        this.$el.find(".chat-room-member-state-icon").attr("data-state", this.model.get("state"));
     }
 });
