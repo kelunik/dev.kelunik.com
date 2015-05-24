@@ -3,11 +3,11 @@ var $ = require("jquery");
 Backbone.$ = $;
 
 var App = require("../App");
-var RoomView = require("./RoomView");
+var UserView = require("./UserView");
 
 module.exports = Backbone.View.extend({
     tagName: "section",
-    className: "chat-room-list",
+    className: "chat-room-member-list",
 
     initialize: function () {
         this.listenTo(this.collection, "add", this.renderSingle);
@@ -24,7 +24,7 @@ module.exports = Backbone.View.extend({
     },
 
     renderSingle: function (room) {
-        var view = new RoomView({model: room});
+        var view = new UserView({model: room});
         this.$el.append(view.render().el);
 
         return this;

@@ -7,6 +7,7 @@ var App = require("../App");
 var Input = require("../models/Input");
 var InputView = require("./InputView");
 var MessageListView = require("./MessageListView");
+var UserListView = require("./UserListView");
 
 module.exports = Backbone.View.extend({
     tagName: "div",
@@ -20,13 +21,14 @@ module.exports = Backbone.View.extend({
     },
 
     initialize: function () {
+        this.memberView = new UserListView({collection: this.model.get("users")});
         this.messageView = new MessageListView({collection: this.model.get("messages")});
 
         this.input = new Input({
             room: this.model
         });
 
-        this.inputView = new InputView({model: this.input, vent: this.vent});
+        this.inputView = new InputView({model: this.input});
         this.listenTo(this.model, "focus", this.onFocus);
     },
 
@@ -35,6 +37,7 @@ module.exports = Backbone.View.extend({
 
         this.$el.find(".chat-main").append(this.messageView.render().el);
         this.$el.find(".chat-main").append(this.inputView.render().el);
+        this.$el.find(".chat-info").append(this.memberView.render().el);
 
         // attach event handler here, because we need room's properties
         this.$el.find(".messages").on("scroll", _.throttle(this.onScroll.bind(this), 250));

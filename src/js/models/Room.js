@@ -3,6 +3,7 @@ var $ = require("jquery");
 Backbone.$ = $;
 
 var MessageList = require("./MessageList");
+var UserList = require("./UserList");
 var App = require("../App");
 
 module.exports = Backbone.Model.extend({
@@ -12,6 +13,7 @@ module.exports = Backbone.Model.extend({
             name: "",
             image: "",
             messages: new MessageList,
+            users: new UserList,
             initialPayloadSent: false,
             firstMessage: -1,
             lastMessage: -1,
