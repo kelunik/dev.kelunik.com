@@ -39,6 +39,13 @@ module.exports = Backbone.View.extend({
 
     onInput: function () {
         this.model.set("changed", true);
+
+        var match = /^:(\d+)/.exec(this.input.value);
+
+        if (match) {
+            this.replyTo(match[1]);
+        }
+
         this.adjust();
     },
 
@@ -237,22 +244,20 @@ module.exports = Backbone.View.extend({
         var value = this.input.value;
         var reply = this.model.get("replyTo");
 
+        value = value.replace(/^:\d+ ?/, "");
+
         if (id) {
             if (reply) {
-                this.input.value = value.replace(":" + reply, ":" + id);
-
                 document.getElementById(reply).classList.remove("input-reply");
-            } else {
-                this.input.value = ":" + id + " " + value;
             }
+
+            this.input.value = ":" + id + " " + value;
 
             document.getElementById(id).classList.add("input-reply");
         } else {
             if (reply) {
                 document.getElementById(reply).classList.remove("input-reply");
             }
-
-            this.input.value = value.replace(/^:\d+ ?/, "");
         }
 
         this.model.set("replyTo", id);
@@ -347,6 +352,12 @@ module.exports = Backbone.View.extend({
             if (model) {
                 this.input.value = model.get("text");
                 this.model.set("editId", id);
+
+                var match = /^:(\d+)/.exec(this.input.value);
+
+                if (match) {
+                    this.replyTo(match[1]);
+                }
             } else {
                 this.input.value = "";
                 this.model.set("editId", null);
@@ -357,5 +368,6 @@ module.exports = Backbone.View.extend({
         }
 
         this.input.focus();
+        this.adjust();
     }
 });
