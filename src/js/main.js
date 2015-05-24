@@ -17,6 +17,7 @@ if (window.top != window.self) {
     var Router = require("./Router");
     var AppView = require("./views/AppView");
     var PingManager = require("./PingManager");
+    var BrowserActivity = require("./models/BrowserActivity");
     var App = require("./App");
     var Remarkable = require("remarkable");
     var Handlebars = require("hbsfy/runtime");
@@ -61,6 +62,7 @@ if (window.top != window.self) {
     App.router = new Router;
     App.appView = new AppView;
     App.pingManager = new PingManager;
+    App.browserActivity = new BrowserActivity;
 
     if (typeof WebSocket === "undefined") {
         App.appView.setView(new UnsupportedBrowserView({
