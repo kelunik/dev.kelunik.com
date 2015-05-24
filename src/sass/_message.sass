@@ -1,9 +1,9 @@
 .message
   display: flex
   position: relative
-  line-height: 30px
+  line-height: 24px
   font-size: 14px
-  padding: 3px 0
+  padding: 7px 0
   border-top: 1px solid rgba(0, 0, 0, .1)
   &:last-child
     border-bottom: 1px solid rgba(0, 0, 0, .1)
@@ -40,8 +40,8 @@
   width: 16px
   height: 16px
   margin-left: 8px
-  margin-top: 7px
-  margin-bottom: 7px
+  margin-top: 4px
+  margin-bottom: 4px
   vertical-align: middle
   display: inline-block
   border-radius: 50%
@@ -87,3 +87,18 @@
   font: normal normal normal 14px/1 "FontAwesome"
   transform: translateY(-1px) rotate(90deg) scale(.75, -.75)
   font-size: inherit
+
+.message ul
+  margin-top: -5px
+  padding-left: 20px
+
+.message li
+  line-height: 24px
+
+.message p
+  margin-top: 5px
+  margin-bottom: 5px
+  &:first-child
+    margin-top: 0
+  &:last-child
+    margin-bottom: 0
