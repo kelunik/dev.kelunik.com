@@ -42,8 +42,8 @@ module.exports = Backbone.View.extend({
 
         var match = /^:(\d+)/.exec(this.input.value);
 
-        if (match) {
-            this.replyTo(match[1]);
+        if (1 * match[1] !== this.model.get("replyTo")) {
+            this.replyTo(null);
         }
 
         this.adjust();
@@ -244,6 +244,14 @@ module.exports = Backbone.View.extend({
         var value = this.input.value;
         var reply = this.model.get("replyTo");
 
+        if (reply === id) {
+            return;
+        }
+
+        var selectionStart = this.input.selectionStart;
+        var selectionEnd = this.input.selectionEnd;
+        var length = value.length;
+
         value = value.replace(/^:\d+ ?/, "");
 
         if (id) {
@@ -263,8 +271,11 @@ module.exports = Backbone.View.extend({
         this.model.set("replyTo", id);
         this.model.set("changed", true);
 
+        var changedLength = this.input.value.length - length;
+
         this.input.focus();
-        this.input.selectionStart = this.input.selectionEnd = this.input.value.length;
+        this.input.selectionStart = selectionStart + changedLength;
+        this.input.selectionEnd = selectionEnd + changedLength;
         this.adjust();
     },
 
