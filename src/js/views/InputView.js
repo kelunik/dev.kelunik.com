@@ -38,7 +38,8 @@ module.exports = Backbone.View.extend({
     },
 
     onInput: function () {
-        _.throttle(this.adjust(), 250);
+        this.model.set("changed", true);
+        this.adjust();
     },
 
     onKeyDown: function (event) {
@@ -160,7 +161,11 @@ module.exports = Backbone.View.extend({
                 this.replyTo(previousModel.get("id"));
                 return false;
             }
-        } else {
+        } else if (!event.shiftKey) {
+            if (this.model.get("changed") && this.input.value !== "") {
+                return;
+            }
+
             var filter = messages.where({authorId: App.user.get("id")});
             currentId = this.model.get("editId");
             currentModel = messages.get(currentId);
@@ -203,7 +208,11 @@ module.exports = Backbone.View.extend({
             this.replyTo(nextModel ? nextModel.get("id") : null);
 
             return false;
-        } else {
+        } else if (!event.shiftKey) {
+            if (this.model.get("changed") && this.input.value !== "") {
+                return;
+            }
+
             var filter = messages.where({authorId: App.user.get("id")});
             currentId = this.model.get("editId");
             currentModel = messages.get(currentId);
@@ -247,6 +256,7 @@ module.exports = Backbone.View.extend({
         }
 
         this.model.set("replyTo", id);
+        this.model.set("changed", true);
 
         this.input.focus();
         this.input.selectionStart = this.input.selectionEnd = this.input.value.length;
@@ -293,6 +303,8 @@ module.exports = Backbone.View.extend({
             // TODO clear visible pings
         }
 
+        this.model.set("changed", false);
+
         this.input.value = "";
         this.input.focus();
 
@@ -327,6 +339,8 @@ module.exports = Backbone.View.extend({
     },
 
     edit: function (id) {
+        this.model.set("changed", false);
+
         if (id) {
             var model = this.model.get("room").get("messages").get(id);
 
