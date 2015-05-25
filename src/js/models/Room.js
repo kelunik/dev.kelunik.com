@@ -99,6 +99,10 @@ module.exports = Backbone.Model.extend({
         });
 
         this.listenTo(App.vent, "socket:message:ping", function (ping) {
+            if (ping.roomId !== this.get("id")) {
+                return;
+            }
+
             App.vent.trigger("chat:ping", this, ping.user);
         });
     }
