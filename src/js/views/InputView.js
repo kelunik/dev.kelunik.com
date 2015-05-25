@@ -57,11 +57,23 @@ module.exports = Backbone.View.extend({
                 return this.onEnter(event);
             case 9:
                 return this.onTab(event);
+            case 37:
+                return this.onArrowLeft(event);
             case 38:
                 return this.onArrowUp(event);
+            case 39:
+                return this.onArrowRight(event);
             case 40:
                 return this.onArrowDown(event);
         }
+    },
+
+    onArrowLeft: function () {
+        this.model.set("changed", true);
+    },
+
+    onArrowRight: function () {
+        this.model.set("changed", true);
     },
 
     onSend: function (event) {
