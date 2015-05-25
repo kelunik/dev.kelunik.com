@@ -7,15 +7,16 @@ module.exports = Backbone.View.extend({
     className: "message",
     template: require("../templates/message.handlebars"),
     replyTemplate: require("../templates/messageReply.handlebars"),
+
     attributes: function () {
         return {
-            tabindex: "0",
             "id": this.model.get("id"),
             "data-reply": this.model.get("replyId")
         };
     },
     events: {
-        "click .in-reply": "onReplyClick"
+        "click .in-reply": "onReplyClick",
+        "click": "onClick"
     },
 
     initialize: function () {
@@ -49,9 +50,12 @@ module.exports = Backbone.View.extend({
         content.querySelectorAll("img").forEach(function (img) {
             // currently we can't allow images, because they're mixed content,
             // which we want to avoid, sorry. Just replace those images with a link.
+
             var link = document.createElement("a");
+
             link.href = img.src;
             link.textContent = img.src;
+
             img.parentNode.replaceChild(link, img);
         });
 
@@ -60,6 +64,8 @@ module.exports = Backbone.View.extend({
                 o.setAttribute("target", "_blank");
             }
         });
+
+        this.onSelectionChange();
 
         if (this.el.parentNode) {
             this.el.parentNode.scrollTop = this.el.parentNode.scrollHeight - scroll;
@@ -76,6 +82,22 @@ module.exports = Backbone.View.extend({
             event.preventDefault();
             window.location.hash = id;
             return false;
+        }
+    },
+
+    onClick: function (event) {
+        event.preventDefault();
+
+        this.model.set("selected", !this.model.get("selected"));
+
+        return false;
+    },
+
+    onSelectionChange: function () {
+        if (this.model.get("selected")) {
+            this.el.classList.add("message-selected");
+        } else {
+            this.el.classList.remove("message-selected");
         }
     }
 });
