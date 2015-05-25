@@ -1,4 +1,3 @@
-var Favico = require("./vendor/favico.js");
 var Backbone = require("backbone");
 var _ = require("backbone/node_modules/underscore");
 var $ = require("jquery");
@@ -55,10 +54,12 @@ module.exports = function () {
                 } else if (image.complete || image.readyState === 4 || image.readyState === "complete") {
                     var canvas = document.createElement("canvas");
                     canvas.width = canvas.height = 80;
+
                     var ctx = canvas.getContext("2d");
                     ctx.drawImage(image, 0, 0, 80, 80);
                     ctx.drawImage(appIcon, 40, 40, 35, 35);
-                    icon = avatars[customIcon] = canvas.toDataURL();
+
+                    avatars[customIcon] = icon = canvas.toDataURL();
                 }
 
                 var notification = new Notification(title, {
@@ -80,10 +81,9 @@ module.exports = function () {
         }
     };
 
-    App.vent.on("socket:message:ping", function (data) {
-        // TODO room name
-        self.displayNotification("New message in ...", "You were mentioned by @" + data.user.name + ".",
-            "https://avatars.githubusercontent.com/u/" + data.user.avatar + "?v=3&s=80");
+    App.vent.on("chat:ping", function (room, user) {
+        self.displayNotification("New message in " + room.get("name"), "You were mentioned by @" + user.name + ".",
+            "https://avatars.githubusercontent.com/u/" + user.avatar + "?v=3&s=80");
     });
 
     return self;

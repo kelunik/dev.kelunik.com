@@ -97,5 +97,9 @@ module.exports = Backbone.Model.extend({
                 this.set("firstLoadableMessage", this.get("firstMessage"));
             }
         });
+
+        this.listenTo(App.vent, "socket:message:ping", function (ping) {
+            App.vent.trigger("chat:ping", this, ping.user);
+        });
     }
 });
