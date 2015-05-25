@@ -97,6 +97,10 @@ module.exports = Backbone.View.extend({
     },
 
     onClick: function (event) {
+        if (event.target.nodeName === "A") {
+            return;
+        }
+
         event.preventDefault();
 
         this.model.set("selected", !this.model.get("selected"));
