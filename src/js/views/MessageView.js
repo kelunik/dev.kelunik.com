@@ -2,6 +2,8 @@ var Backbone = require("backbone");
 var $ = require("jquery");
 Backbone.$ = $;
 
+var App = require("../App");
+
 module.exports = Backbone.View.extend({
     tagName: "div",
     className: "message",
@@ -21,6 +23,11 @@ module.exports = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(this.model, "change", this.render);
+        this.listenTo(App.user, "change:id", function () {
+            if (App.user.get("id") === this.model.get("authorId")) {
+                this.el.classList.add("message-own");
+            }
+        });
     },
 
     render: function () {
@@ -64,6 +71,10 @@ module.exports = Backbone.View.extend({
                 o.setAttribute("target", "_blank");
             }
         });
+
+        if (App.user.get("id") === this.model.get("authorId")) {
+            this.el.classList.add("message-own");
+        }
 
         this.onSelectionChange();
 
