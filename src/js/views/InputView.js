@@ -181,6 +181,8 @@ module.exports = Backbone.View.extend({
                 return false;
             }
         } else if (!event.shiftKey) {
+            console.log(this.model.get("changed"));
+
             if (this.model.get("changed") && this.input.value !== "") {
                 return;
             }
@@ -203,6 +205,8 @@ module.exports = Backbone.View.extend({
                 this.edit(previousModel.get("id"));
                 return false;
             }
+        } else {
+            this.model.set("changed", true);
         }
     },
 
@@ -249,6 +253,8 @@ module.exports = Backbone.View.extend({
             this.edit(nextModel ? nextModel.get("id") : null);
 
             return false;
+        } else {
+            this.model.set("changed", true);
         }
     },
 
@@ -367,8 +373,6 @@ module.exports = Backbone.View.extend({
     },
 
     edit: function (id) {
-        this.model.set("changed", false);
-
         if (id) {
             var model = this.model.get("room").get("messages").get(id);
 
@@ -390,6 +394,7 @@ module.exports = Backbone.View.extend({
             this.model.set("editId", null);
         }
 
+        this.model.set("changed", false);
         this.input.focus();
         this.adjust();
     }
