@@ -59,6 +59,14 @@ if (window.top != window.self) {
         return new Handlebars.SafeString(remarkable.render(text));
     });
 
+    Handlebars.registerHelper("chatTime", function (timestamp) {
+        var date = new Date(timestamp * 1000);
+        var hours = date.getHours();
+        var minutes = "0" + date.getMinutes();
+
+        return hours + ":" + minutes.substr(minutes.length - 2);
+    });
+
     App.router = new Router;
     App.appView = new AppView;
     App.pingManager = new PingManager;
