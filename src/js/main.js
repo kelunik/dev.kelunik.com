@@ -134,6 +134,10 @@ if (window.top != window.self) {
         }
     });
 
+    App.router.on("route:message", function (messageId) {
+        window.location = "https://dev.kelunik.com/messages/" + messageId + "#message-" + messageId;
+    });
+
     Backbone.history.start({pushState: true});
 
     $(document).on("click", "a[href^='/']", function (event) {
