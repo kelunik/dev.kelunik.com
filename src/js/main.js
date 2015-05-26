@@ -7,6 +7,20 @@ if (window.top != window.self) {
     var $ = require("jquery");
     Backbone.$ = $;
 
+    window.onerror = function (message, url, line) {
+        var jsError = require("./templates/jsError.handlebars");
+
+        $("#js-error").html(jsError({
+            message: message,
+            url: url,
+            line: line
+        })).fadeIn(200);
+
+        $("#js-error-dismiss").on("click", function () {
+            $("#js-error").fadeOut(200);
+        });
+    };
+
     var _ = require("backbone/node_modules/underscore");
     var ChatView = require("./views/ChatView");
     var UnsupportedBrowserView = require("./views/UnsupportedBrowserView");
