@@ -13,8 +13,6 @@ module.exports = Backbone.Collection.extend({
         var self = this;
 
         this.listenTo(App.vent, "socket:message:whereami", function (rooms) {
-            console.log("Rooms", JSON.stringify(rooms));
-
             rooms.forEach(function (room) {
                 var users = room.users;
 

@@ -11,7 +11,7 @@ module.exports = Backbone.View.extend({
     template: require("../templates/chat.handlebars"),
 
     initialize: function () {
-        this.listenTo(this.model.get("rooms"), "add", this.switchRoom);
+        this.listenTo(this.model.get("rooms"), "render", this.switchRoom);
         this.listenTo(this.model, "change", this.switchRoom);
 
         this.roomTabListView = new RoomTabListView({collection: this.model.get("rooms")});
@@ -35,8 +35,6 @@ module.exports = Backbone.View.extend({
         var room = this.model.get("rooms").get(roomId);
 
         if (room) {
-            console.log("Switching room", roomId, JSON.stringify(room.toJSON()));
-
             room.trigger("focus");
         }
     }

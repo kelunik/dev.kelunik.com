@@ -26,6 +26,7 @@ module.exports = Backbone.View.extend({
     renderSingle: function (room) {
         var view = new RoomView({model: room});
         this.$el.append(view.render().el);
+        this.collection.trigger("render");
 
         return this;
     }
