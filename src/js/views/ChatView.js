@@ -35,6 +35,8 @@ module.exports = Backbone.View.extend({
         var room = this.model.get("rooms").get(roomId);
 
         if (room) {
+            console.log("Switching room", roomId, JSON.stringify(room.toJSON()));
+
             room.trigger("focus");
         }
     }

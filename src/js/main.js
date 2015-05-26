@@ -129,8 +129,6 @@ if (window.top != window.self) {
             var chat = new Chat({currentRoom: roomId});
             var chatView = new ChatView({model: chat});
 
-            console.log("Chat JSON", JSON.stringify(chat.toJSON()));
-
             App.appView.setView(chatView);
             App.vent.trigger("socket:send", "whereami", {join: roomId});
         }
