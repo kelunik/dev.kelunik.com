@@ -141,15 +141,16 @@ main
 
 .message-input-send
   border: 0
-  background-color: rgba(0, 100, 200, .85)
+  background-color: transparent
   text-transform: uppercase
   text-align: center
-  color: white
+  color: rgb(0, 100, 200)
+  font-weight: bold
   border-radius: 3px
-  padding-left: 10px
-  padding-right: 10px
-  height: 26px
+  padding: 6px 14px
   align-self: flex-end
+  &:hover
+    background-color: rgba(0, 0, 0, .1)
 
 .chat-room
   display: none
