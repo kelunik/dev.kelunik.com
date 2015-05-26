@@ -53,7 +53,10 @@ module.exports = Backbone.View.extend({
 
             if (replyTo) {
                 var replyToNode = document.getElementById(replyTo);
-                replyToNode.classList.add("message-highlight");
+
+                if (replyToNode) {
+                    replyToNode.classList.add("message-highlight");
+                }
             }
         }
 
@@ -73,7 +76,10 @@ module.exports = Backbone.View.extend({
 
             if (replyTo) {
                 var replyToNode = document.getElementById(replyTo);
-                replyToNode.classList.remove("message-highlight");
+
+                if (replyToNode) {
+                    replyToNode.classList.remove("message-highlight");
+                }
             }
         }
 
