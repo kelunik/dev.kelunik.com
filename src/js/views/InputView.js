@@ -14,7 +14,8 @@ module.exports = Backbone.View.extend({
     events: {
         "input .message-input-text": "onInput",
         "keydown .message-input-text": "onKeyDown",
-        "click .message-input-send": "onSend"
+        "click .message-input-send": "onSend",
+        "click .message-input-pings": "onPingClick"
     },
 
     initialize: function () {
@@ -409,6 +410,25 @@ module.exports = Backbone.View.extend({
 
     onPingChange: function (model, collection) {
         var count = collection.length;
-        this.$el.find(".message-input-pings").text(count ? count : "");
+
+        var $el = this.$el.find(".message-input-pings").text(count ? count : "");
+
+        if (count) {
+            $el.attr("href", "/messages/" + collection.at(0).get("id"));
+        }
+    },
+
+    onPingClick: function (event) {
+        var ping = this.model.get("room").get("pings").clearPing();
+
+        if (ping) {
+            var model = this.model.get("room").get("messages").get(ping.get("id"));
+
+            if (model) {
+                event.preventDefault();
+                window.location.hash = ping.get("id");
+                return false;
+            }
+        }
     }
 });

@@ -27,7 +27,7 @@ module.exports = Backbone.Collection.extend({
 
                 pings.forEach(function(ping) {
                     room.pings.add({
-                        id: ping.messageId
+                        id: ping
                     });
                 });
 
