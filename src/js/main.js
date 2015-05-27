@@ -34,6 +34,7 @@ if (window.top != window.self) {
     var BrowserActivity = require("./models/BrowserActivity");
     var App = require("./App");
     var Remarkable = require("remarkable");
+    var RemarkablePlugin = require("remarkable-regexp");
     var Handlebars = require("hbsfy/runtime");
     var hljs = require("./vendor/highlight.js");
 
@@ -68,6 +69,16 @@ if (window.top != window.self) {
             return ""; // use external default escaping
         }
     });
+
+    var plugin = new RemarkablePlugin(/@([a-z][a-z0-9-]*)/i, function (match, utils) {
+        if (match[1].toLowerCase() === App.user.get("name").toLowerCase()) {
+            return "<span class=\"ping\">" + utils.escape(match[0]) + "</span>";
+        } else {
+            return utils.escape(match[0]);
+        }
+    });
+
+    remarkable.use(plugin);
 
     Handlebars.registerHelper("markdown", function (text) {
         return new Handlebars.SafeString(remarkable.render(text));

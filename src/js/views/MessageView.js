@@ -10,15 +10,16 @@ module.exports = Backbone.View.extend({
     template: require("../templates/message.handlebars"),
     replyTemplate: require("../templates/messageReply.handlebars"),
 
+    events: {
+        "click .in-reply": "onReplyClick",
+        "click": "onClick"
+    },
+
     attributes: function () {
         return {
             "id": this.model.get("id"),
             "data-reply": this.model.get("replyId")
         };
-    },
-    events: {
-        "click .in-reply": "onReplyClick",
-        "click": "onClick"
     },
 
     initialize: function () {
@@ -49,8 +50,10 @@ module.exports = Backbone.View.extend({
 
         if (data.replyId) {
             $(content).find("p").prepend(this.replyTemplate({
-                id: data.replyId,
-                name: data.replyUser
+                replyId: data.replyId,
+                replyUserId: data.replyUserId,
+                replyUserName: data.replyUserName,
+                highlight: data.replyUserId === App.user.get("id")
             }));
         }
 

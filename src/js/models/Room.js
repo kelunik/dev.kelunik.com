@@ -46,7 +46,8 @@ module.exports = Backbone.Model.extend({
                 text: message.messageText,
                 time: message.time,
                 replyId: message.reply ? message.reply.messageId : null,
-                replyUser: message.reply ? message.reply.user.name : null
+                replyUserId: message.reply ? message.reply.user.id : null,
+                replyUserName: message.reply ? message.reply.user.name : null
             };
 
             this.get("messages").add(message);
@@ -65,7 +66,8 @@ module.exports = Backbone.Model.extend({
                 text: message.text,
                 time: message.time,
                 replyId: message.reply ? message.reply.messageId : null,
-                replyUser: message.reply ? message.reply.user.name : null
+                replyUserId: message.reply ? message.reply.user.id : null,
+                replyUserName: message.reply ? message.reply.user.name : null
             };
 
             this.get("messages").add(message, {merge: true});
@@ -87,7 +89,8 @@ module.exports = Backbone.Model.extend({
                     text: message.messageText,
                     time: message.time,
                     replyId: message.reply ? message.reply.messageId : null,
-                    replyUser: message.reply ? message.reply.user.name : null
+                    replyUserId: message.reply ? message.reply.user.id : null,
+                    replyUserName: message.reply ? message.reply.user.name : null
                 };
 
                 this.get("messages").unshift(message);
