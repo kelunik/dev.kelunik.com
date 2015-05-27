@@ -6,6 +6,7 @@ module.exports = Backbone.Model.extend({
     defaults: {
         id: 0,
         name: "",
-        state: "offline"
+        state: "offline",
+        avatar: ""
     }
 });

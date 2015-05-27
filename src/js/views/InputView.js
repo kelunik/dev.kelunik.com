@@ -22,7 +22,10 @@ module.exports = Backbone.View.extend({
     },
 
     render: function () {
-        this.$el.html(this.template(this.model.toJSON()));
+        var data = this.model.toJSON();
+        data.user = App.user.toJSON();
+
+        this.$el.html(this.template(data));
         this.input = this.$el.find("textarea").get(0);
         this.onEditChange();
 
