@@ -4,6 +4,7 @@ Backbone.$ = $;
 
 var MessageList = require("./MessageList");
 var UserList = require("./UserList");
+var PingList = require("./PingList");
 var App = require("../App");
 
 module.exports = Backbone.Model.extend({
@@ -14,6 +15,7 @@ module.exports = Backbone.Model.extend({
             image: "",
             messages: new MessageList,
             users: new UserList,
+            pings: new PingList,
             initialPayloadSent: false,
             firstMessage: -1,
             lastMessage: -1,
@@ -105,6 +107,10 @@ module.exports = Backbone.Model.extend({
             if (ping.roomId !== this.get("id")) {
                 return;
             }
+
+            this.get("pings").add({
+                id: ping.messageId
+            });
 
             App.vent.trigger("chat:ping", this, ping.user);
         });

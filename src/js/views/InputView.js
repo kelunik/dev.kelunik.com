@@ -19,6 +19,7 @@ module.exports = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(this.model, "change:editId", this.onEditChange);
+        this.listenTo(this.model.get("room").get("pings"), "add remove", this.onPingChange);
     },
 
     render: function () {
@@ -31,6 +32,7 @@ module.exports = Backbone.View.extend({
 
         // FIXME: please come up with a better solution if you have on
         setTimeout(this.adjust.bind(this), 200);
+        this.onPingChange(null, this.model.get("room").get("pings"));
 
         return this;
     },
@@ -403,5 +405,10 @@ module.exports = Backbone.View.extend({
         this.model.set("changed", false);
         this.input.focus();
         this.adjust();
+    },
+
+    onPingChange: function (model, collection) {
+        var count = collection.length;
+        this.$el.find(".message-input-pings").text(count ? count : "");
     }
 });

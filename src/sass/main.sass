@@ -121,11 +121,33 @@ main
   display: flex
 
 .message-input-user
-  margin: -10px 20px -10px -5px
+  margin: -7px 20px -7px -7px
   align-self: flex-end
+  position: relative
+  line-height: 40px
+  height: 40px
 
 .message-input-user-avatar
   border-radius: 3px
+  margin: 0
+
+.message-input-pings
+  position: absolute
+  right: -3px
+  bottom: -3px
+  border-radius: 3px
+  background-color: rgba(200, 0, 0, .8)
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .5)
+  color: #ffffff
+  font-weight: bold
+  font-size: 12px
+  height: 20px
+  min-width: 20px
+  padding: 0 5px
+  text-align: center
+  line-height: 20px
+  &:empty
+    display: none
 
 .message-input-text
   background-color: transparent
