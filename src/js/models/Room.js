@@ -114,5 +114,13 @@ module.exports = Backbone.Model.extend({
 
             App.vent.trigger("chat:ping", this, ping.user);
         });
+
+        this.listenTo(App.vent, "socket:message:ping-clear", function (ping) {
+            var model = this.get("pings").get(ping.messageId);
+
+            if (model) {
+                this.get("pings").remove(model);
+            }
+        });
     }
 });
