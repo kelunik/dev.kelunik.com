@@ -26,6 +26,9 @@ module.exports = Backbone.View.extend({
         this.input = this.$el.find("textarea").get(0);
         this.onEditChange();
 
+        // FIXME: please come up with a better solution if you have on
+        setTimeout(this.adjust.bind(this), 200);
+
         return this;
     },
 
