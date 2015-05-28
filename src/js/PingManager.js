@@ -2,17 +2,18 @@ var Backbone = require("backbone");
 var _ = require("backbone/node_modules/underscore");
 var $ = require("jquery");
 var App = require("./App");
+var Favico = require("./vendor/favico");
 
 Backbone.$ = $;
 
 module.exports = function () {
-    /* var favicon = new Favico({
-     type: "circle",
-     animation: "none",
-     bgColor: "#d00",
-     textColor: "#eee",
-     fontFamily: "Lato"
-     }); */
+    var favicon = new Favico({
+        type: "circle",
+        animation: "none",
+        bgColor: "#d00",
+        textColor: "#eee",
+        fontFamily: "Lato"
+    });
 
     var avatars = {};
 
@@ -84,6 +85,10 @@ module.exports = function () {
     App.vent.on("chat:ping", function (room, user) {
         self.displayNotification("New message in " + room.get("name"), "You were mentioned by @" + user.name + ".",
             "https://avatars.githubusercontent.com/u/" + user.avatar + "?v=3&s=80");
+    });
+
+    App.vent.on("notification:count", function (count) {
+        favicon.badge(count);
     });
 
     return self;

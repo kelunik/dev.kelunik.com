@@ -13,11 +13,16 @@ module.exports = Backbone.Collection.extend({
             return null;
         }
 
+        App.notificationCount -= this.length;
+
         var ping = this.shift();
 
         App.vent.trigger("socket:send", "ping", {
             messageId: ping.get("id")
         });
+
+        App.notificationCount += this.length;
+        App.vent.trigger("notification:count", App.notificationCount);
 
         return ping;
     }

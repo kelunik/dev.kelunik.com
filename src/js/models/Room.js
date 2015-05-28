@@ -108,19 +108,30 @@ module.exports = Backbone.Model.extend({
                 return;
             }
 
+            App.notificationCount -= this.get("pings").length;
+
             this.get("pings").add({
                 id: ping.messageId
             });
 
+            App.notificationCount += this.get("pings").length;
+
             App.vent.trigger("chat:ping", this, ping.user);
+            App.vent.trigger("notification:count", App.notificationCount);
         });
 
         this.listenTo(App.vent, "socket:message:ping-clear", function (ping) {
             var model = this.get("pings").get(ping.messageId);
 
+            App.notificationCount -= this.get("pings").length;
+
             if (model) {
                 this.get("pings").remove(model);
             }
+
+            App.notificationCount += this.get("pings").length;
+
+            App.vent.trigger("notification:count", App.notificationCount);
         });
     }
 });

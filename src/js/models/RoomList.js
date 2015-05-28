@@ -14,9 +14,13 @@ module.exports = Backbone.Collection.extend({
         var self = this;
 
         this.listenTo(App.vent, "socket:message:whereami", function (rooms) {
+            var pingCount = 0;
+
             rooms.forEach(function (room) {
                 var users = room.users;
                 var pings = room.pings;
+
+                pingCount += pings.length;
 
                 room.users = new UserList;
                 room.pings = new PingList;
@@ -33,6 +37,9 @@ module.exports = Backbone.Collection.extend({
 
                 self.add(room);
             });
+
+            App.notificationCount = pingCount;
+            App.vent.trigger("notification:count", pingCount);
         });
     }
 });

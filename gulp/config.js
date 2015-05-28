@@ -28,7 +28,7 @@ module.exports = {
         dest: dest + "/img"
     },
     markup: {
-        src: src + "/index.html",
+        src: src + "/{index.html,favicon.ico}",
         dest: dest
     },
     browserify: {

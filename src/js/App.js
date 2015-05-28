@@ -7,5 +7,6 @@ Backbone.$ = $;
 
 module.exports = {
     vent: _.extend({}, Backbone.Events),
-    user: new User
+    user: new User,
+    notificationCount: 0
 };
