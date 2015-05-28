@@ -154,6 +154,10 @@ if (window.top != window.self) {
     $(document).on("click", "a[href^='/']", function (event) {
         var href = $(event.currentTarget).attr("href");
 
+        if (event.currentTarget.hasAttribute("target")) {
+            return;
+        }
+
         if (!event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
             event.preventDefault();
 
