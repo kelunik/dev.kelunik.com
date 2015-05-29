@@ -23,7 +23,7 @@
     "jquery": "^2.1.4",
     "moment": "2.9.x",
     "remarkable": "^1.6.0",
-    "remarkable-regexp": "git+ssh://git@github.com:kelunik/remarkable-regexp.git#master"
+    "remarkable-regexp": "https://github.com/kelunik/remarkable-regexp#master"
   },
   "devDependencies": {
     "browser-sync": "^2.7.1",
