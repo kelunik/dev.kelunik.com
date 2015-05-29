@@ -70,7 +70,7 @@ if (window.top != window.self) {
         }
     });
 
-    var plugin = new RemarkablePlugin(/@([a-z][a-z0-9-]*)/i, function (match, utils) {
+    var pingPlugin = new RemarkablePlugin(/@([a-z][a-z0-9-]*)/i, function (match, utils) {
         if (match[1].toLowerCase() === App.user.get("name").toLowerCase()) {
             return "<span class=\"ping\">" + utils.escape(match[0]) + "</span>";
         } else {
@@ -78,7 +78,7 @@ if (window.top != window.self) {
         }
     });
 
-    remarkable.use(plugin);
+    remarkable.use(pingPlugin);
 
     Handlebars.registerHelper("markdown", function (text) {
         return new Handlebars.SafeString(remarkable.render(text));
