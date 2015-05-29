@@ -6,6 +6,8 @@ var $ = require("jquery");
 
 Backbone.$ = $;
 
+var counter = -1;
+
 module.exports = Backbone.View.extend({
     tagName: "section",
     className: "message-input",
@@ -360,6 +362,12 @@ module.exports = Backbone.View.extend({
                 return;
             }
 
+            model.set({
+                pending: true,
+                token: token,
+                text: text
+            });
+
             App.vent.trigger("socket:send", "message-edit", {
                 messageId: edit,
                 text: text,
@@ -368,13 +376,25 @@ module.exports = Backbone.View.extend({
 
             this.edit(null);
         } else {
+            var message = {
+                id: counter,
+                authorId: App.user.get("id"),
+                authorName: App.user.get("name"),
+                authorAvatar: App.user.get("avatar"),
+                text: text,
+                time: 1 * new Date / 1000,
+                token: token
+            };
+
+            counter--;
+
+            this.model.get("room").get("messages").add(message, {merge: true});
+
             App.vent.trigger("socket:send", "message", {
                 roomId: roomId,
                 text: text,
                 tempId: token
             });
-
-            // TODO clear visible pings
         }
 
         this.model.set("changed", false);

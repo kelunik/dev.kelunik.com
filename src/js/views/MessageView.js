@@ -80,12 +80,21 @@ module.exports = Backbone.View.extend({
         }
 
         this.onSelectionChange();
+        this.onPendingChange();
 
         if (this.el.parentNode) {
             this.el.parentNode.scrollTop = this.el.parentNode.scrollHeight - scroll;
         }
 
         return this;
+    },
+
+    onPendingChange: function () {
+        if (this.model.get("pending")) {
+            this.$el.addClass("message-pending");
+        } else {
+            this.$el.removeClass("message-pending");
+        }
     },
 
     onReplyClick: function (event) {

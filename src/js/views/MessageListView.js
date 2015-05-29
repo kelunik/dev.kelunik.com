@@ -3,6 +3,7 @@ var $ = require("jquery");
 Backbone.$ = $;
 
 var MessageView = require("./MessageView");
+var App = require("../App");
 
 module.exports = Backbone.View.extend({
     tagName: "section",
@@ -14,6 +15,7 @@ module.exports = Backbone.View.extend({
 
     initialize: function () {
         this.listenTo(this.collection, "add", this.renderSingle);
+        this.listenTo(this.collection, "remove", this.removeSingle);
     },
 
     render: function () {
@@ -39,6 +41,28 @@ module.exports = Backbone.View.extend({
             if (scroll) {
                 this.el.scrollTop = Math.ceil(this.el.scrollHeight) + 1;
             }
+        }
+
+        if (message.id > 0 && App.user.id === message.get("authorId")) {
+            var token = message.get("token");
+
+            if (token) {
+                var models = this.collection.where({token: token});
+
+                models.forEach(function (o) {
+                    if (o.id < 0) {
+                        this.collection.remove(o);
+                    }
+                }.bind(this));
+            }
+        }
+    },
+
+    removeSingle: function (model) {
+        var node = document.getElementById(model.id);
+
+        if (node) {
+            $(node).remove();
         }
     },
 

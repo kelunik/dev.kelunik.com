@@ -11,6 +11,18 @@
   &.message-selected
     background-color: #dff5ff
 
+.message-pending
+  animation: pending 2s
+  opacity: .5
+
+@keyframes pending
+  0%
+    opacity: 1
+  50%
+    opacity: 1
+  100%
+    opacity: .5
+
 .message-select
   display: flex
   line-height: 24px

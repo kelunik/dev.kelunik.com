@@ -49,7 +49,8 @@ module.exports = Backbone.Model.extend({
                 time: message.time,
                 replyId: message.reply ? message.reply.messageId : null,
                 replyUserId: message.reply ? message.reply.user.id : null,
-                replyUserName: message.reply ? message.reply.user.name : null
+                replyUserName: message.reply ? message.reply.user.name : null,
+                token: message.token
             };
 
             this.get("messages").add(message);
@@ -69,7 +70,8 @@ module.exports = Backbone.Model.extend({
                 time: message.time,
                 replyId: message.reply ? message.reply.messageId : null,
                 replyUserId: message.reply ? message.reply.user.id : null,
-                replyUserName: message.reply ? message.reply.user.name : null
+                replyUserName: message.reply ? message.reply.user.name : null,
+                pending: false
             };
 
             this.get("messages").add(message, {merge: true});

@@ -11,6 +11,8 @@ module.exports = Backbone.Model.extend({
         text: "",
         time: 0,
         replyId: null,
-        replyUser: null
+        replyUser: null,
+        token: null,
+        pending: false
     }
 });
