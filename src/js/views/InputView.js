@@ -382,6 +382,24 @@ module.exports = Backbone.View.extend({
         this.input.value = "";
         this.input.focus();
 
+        this.model.get("room").get("pings").each(function (ping) {
+            var node = document.getElementById(ping.get("id"));
+
+            if (!node) {
+                return;
+            }
+
+            var bounds = node.parentNode.getBoundingClientRect();
+            var rec = node.getBoundingClientRect();
+
+            if (rec.top >= bounds.top && rec.top < bounds.top + bounds.height
+                || rec.bottom > bounds.top && rec.bottom <= bounds.top + bounds.height) {
+                App.vent.trigger("socket:send", "ping", {
+                    messageId: ping.get("id")
+                });
+            }
+        });
+
         this.replyTo(null);
         this.adjust();
     },
