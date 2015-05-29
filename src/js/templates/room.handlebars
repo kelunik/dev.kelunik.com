@@ -1,11 +1,17 @@
 <section class="card chat-main">
     <header class="card-head">
-        {{name}}
+        <div class="card-head-title">{{name}}</div>
+        <div class="card-head-actions">
+            <a class="card-head-action" href="/rooms/{{id}}/leave" title="leave room">
+                <i class="fa fa-sign-out"></i>
+            </a>
+        </div>
     </header>
 </section>
 
 <aside class="card chat-info">
-    <header class="card-head card-head-tabs">
+    <header class="card-head card-head-title card-head-tabs">
+
         <div class="card-head-tab card-head-tab-active">
             Members
         </div>
