@@ -102,25 +102,53 @@ module.exports = Backbone.View.extend({
     },
 
     onEnter: function (event) {
+        event.preventDefault();
+
         var value = this.input.value;
 
         if (event.shiftKey) {
-            return;
+            this.insertNewLine();
+            return false;
         }
 
         if (event.ctrlKey) {
-            event.preventDefault();
             this.submit();
-
             return false;
         }
 
         if (value.indexOf("\n") === -1) {
-            event.preventDefault();
             this.submit();
-
             return false;
         }
+
+        this.insertNewLine();
+        return false;
+    },
+
+    insertNewLine: function () {
+        var start = this.input.selectionStart;
+        var end = this.input.selectionEnd;
+        var value = this.input.value;
+
+        var indent = "";
+        var lastNewLine = value.lastIndexOf("\n");
+
+        if (lastNewLine > 0) {
+            indent = value.substring(lastNewLine + 1);
+        } else {
+            indent = value;
+        }
+
+        indent = indent.replace(/(\S.*)/, "");
+
+        if (indent === "\n") {
+            indent = "";
+        }
+
+        this.input.value = value.substring(0, start) + "\n" + indent + value.substring(end);
+        this.input.selectionStart = this.input.selectionEnd = start + 1 + indent.length;
+
+        this.adjust();
     },
 
     onTab: function (event) {
@@ -138,26 +166,29 @@ module.exports = Backbone.View.extend({
         } else {
             var selectStart = start;
 
-            var line_before = before.substr(0, Math.max(0, before.lastIndexOf("\n") + 1));
-            var line_after = after.substr(Math.max(0, after.indexOf("\n")));
-            var text_to_indent = before.substr(Math.max(0, before.lastIndexOf("\n") + 1))
+            var lineBreakBefore = Math.max(0, before.lastIndexOf("\n") + 1);
+            var lineBreakAfter = Math.max(0, after.indexOf("\n"));
+
+            var lineBefore = before.substr(0, lineBreakBefore);
+            var lineAfter = after.substr(lineBreakAfter);
+
+            var textToIndent = before.substr(lineBreakBefore)
                 + value.substring(start, end)
-                + after.substr(0, Math.max(0, after.indexOf("\n")));
+                + after.substr(0, lineBreakAfter);
 
             if (event && event.shiftKey) {
-                selectStart -= /(^|\n)(\t| {0,4})/g.exec(text_to_indent)[2].length;
+                selectStart -= /(^|\n)(\t| {0,4})/.exec(textToIndent)[2].length;
 
-                text_to_indent = text_to_indent.replace(/(^|\n)(\t| {0,4})/g, "\n");
+                textToIndent = textToIndent.replace(/(^|\n)(\t| {0,4})/g, "\n");
 
-                if (text_to_indent.indexOf("\n") === 0) { // TODO: Just get first char and compare
-                    text_to_indent = text_to_indent.substr(1);
+                if (textToIndent.charAt(0) === "\n") {
+                    textToIndent = textToIndent.substr(1);
                 }
 
-                this.input.value = line_before + text_to_indent + line_after;
+                this.input.value = lineBefore + textToIndent + lineAfter;
             } else {
+                this.input.value = lineBefore + "\t" + textToIndent.replace(/\n/g, "\n\t") + lineAfter;
                 selectStart++;
-
-                this.input.value = line_before + "\t" + text_to_indent.replace(/\n/g, "\n\t") + line_after;
             }
 
             this.input.selectionStart = selectStart;
