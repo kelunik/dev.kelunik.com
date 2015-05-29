@@ -1,5 +1,9 @@
 require("./extend.js");
 
+// print some ascii art
+// use template, because multiline strings in js ...
+console.log(require("./templates/ascii.handlebars")());
+
 if (window.top != window.self) {
     window.top.location.href = window.location.href;
 } else {
