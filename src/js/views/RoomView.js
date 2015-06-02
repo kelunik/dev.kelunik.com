@@ -16,7 +16,8 @@ module.exports = Backbone.View.extend({
 
     events: {
         "click .card-head-action-search": "onSearchClick",
-        "click .card-head-action-back": "onBackClick"
+        "click .card-head-action-back": "onBackClick",
+        "keydown .card-head-input": "onSearchEscape"
     },
 
     attributes: function () {
@@ -95,5 +96,14 @@ module.exports = Backbone.View.extend({
         event.preventDefault();
         this.$el.find(".card-head-opt-visible").removeClass("card-head-opt-visible");
         return false;
+    },
+
+    onSearchEscape: function (event) {
+        if (event.which === 27) {
+            event.preventDefault();
+            this.$el.find(".card-head-opt-visible").removeClass("card-head-opt-visible");
+            this.$el.find(".message-input-text").focus();
+            return false;
+        }
     }
 });
