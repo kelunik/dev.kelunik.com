@@ -14,6 +14,11 @@ module.exports = Backbone.View.extend({
     className: "chat-room",
     template: require("../templates/room.handlebars"),
 
+    events: {
+        "click .card-head-action-search": "onSearchClick",
+        "click .card-head-action-back": "onBackClick"
+    },
+
     attributes: function () {
         return {
             id: "room-" + this.model.get("id")
@@ -77,5 +82,18 @@ module.exports = Backbone.View.extend({
             direction: "older",
             messageId: -1
         });
+    },
+
+    onSearchClick: function () {
+        event.preventDefault();
+        this.$el.find(".card-head-opt-search").addClass("card-head-opt-visible");
+        this.$el.find(".card-head-search-primary input").focus();
+        return false;
+    },
+
+    onBackClick: function (event) {
+        event.preventDefault();
+        this.$el.find(".card-head-opt-visible").removeClass("card-head-opt-visible");
+        return false;
     }
 });

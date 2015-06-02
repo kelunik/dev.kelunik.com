@@ -1,7 +1,30 @@
 <section class="card chat-main">
+    <form class="card-head-opt card-head-opt-search" action="/rooms/search/{{id}}" method="get">
+        <button class="card-head-action card-head-action-back" title="back" type="button">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+
+        <label class="card-head-input-label card-head-search-primary">
+            <span class="card-head-input-label-text">search for</span>
+            <input type="text" name="q" class="card-head-input" placeholder="those 13 weird tricks to fix bugs…">
+        </label>
+
+        <label class="card-head-input-label card-head-search-secondary">
+            <span class="card-head-input-label-text">by</span>
+            <input type="text" name="author" class="card-head-input" placeholder="John Doe">
+        </label>
+
+        <button class="card-head-action card-head-action-search-submit" title="search" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
+    </form>
+
     <header class="card-head">
         <div class="card-head-title">{{name}}</div>
         <div class="card-head-actions">
+            <button class="card-head-action card-head-action-search" title="search for messages in this room" type="button">
+                <i class="fa fa-search"></i>
+            </button>
             <a class="card-head-action" href="/rooms/{{id}}/leave" title="leave room">
                 <i class="fa fa-sign-out"></i>
             </a>
