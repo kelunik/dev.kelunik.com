@@ -30,19 +30,26 @@ module.exports = function () {
                     // reset onload
                 };
 
-                var notification = new Notification(title, {
-                    tag: "message",
-                    icon: "/img/logo_40x40x2.png",
-                    lang: "en_US",
-                    dir: "ltr",
-                    body: message
-                });
+                if (Notification) {
+                    try {
+                        var notification = new Notification(title, {
+                            tag: "message",
+                            icon: "/img/logo_40x40x2.png",
+                            lang: "en_US",
+                            dir: "ltr",
+                            body: message
+                        });
 
-                // Firefox closes notifications after 4 seconds,
-                // let's do this in other browsers, too.
-                notification.onshow = function () {
-                    setTimeout(notification.close.bind(notification), 5000);
-                };
+                        // Firefox closes notifications after 4 seconds,
+                        // let's do this in other browsers, too.
+                        notification.onshow = function () {
+                            setTimeout(notification.close.bind(notification), 5000);
+                        };
+                    } catch (e) {
+                        // ignore, new notification API used in Chrome mobile...
+                    }
+                }
+
             }, 3000);
 
             image.onload = function () {
@@ -85,6 +92,10 @@ module.exports = function () {
     App.vent.on("chat:ping", function (room, user) {
         self.displayNotification("New message in " + room.get("name"), "You were mentioned by @" + user.name + ".",
             "https://avatars.githubusercontent.com/u/" + user.avatar + "?v=3&s=80");
+
+        if (navigator.vibrate) {
+            navigator.vibrate(500);
+        }
     });
 
     App.vent.on("notification:count", function (count) {
