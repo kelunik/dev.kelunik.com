@@ -27,6 +27,7 @@ if (window.top != window.self) {
 
     var _ = require("backbone/node_modules/underscore");
     var ChatView = require("./views/ChatView");
+    var SimpleView = require("./views/SimpleView");
     var UnsupportedBrowserView = require("./views/UnsupportedBrowserView");
     var Chat = require("./models/Chat");
     var Message = require("./models/Message");
@@ -130,9 +131,13 @@ if (window.top != window.self) {
     App.vent.trigger("socket:send", "me");
 
     App.router.on("route:defaultRoute", function () {
+        App.appView.setView(new SimpleView({
+            template: require("./templates/ascii_not_found.handlebars")
+        }));
+
         setTimeout(function () {
-            Backbone.history.navigate("/rooms/1", true);
-        }, 1500);
+            // Backbone.history.navigate("/rooms/1", true);
+        }, 3000);
     });
 
     App.router.on("route:room", function (roomId) {
